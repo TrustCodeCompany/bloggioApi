@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-BloggioApplication<bloggio>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.bloggio.api.bloggio.BloggioApplication",
+      "projectName": "bloggio",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
