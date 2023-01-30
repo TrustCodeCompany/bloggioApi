@@ -1,2 +1,2 @@
 # bloggioApi
-api rest
+api rest spring boot
