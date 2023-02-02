@@ -1,17 +1,17 @@
 package com.bloggio.api.bloggio.service;
 
-import org.springframework.stereotype.Service;
-
 import com.bloggio.api.bloggio.dto.UsersDTO;
 import com.bloggio.api.bloggio.mapper.UsersMapperImpl;
 import com.bloggio.api.bloggio.persistence.entity.Users;
 import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UsersService {
 
     private final UsersRepository usersRepository;
-    private final UsersMapperImpl usersMapperImpl;
+
+    private UsersMapperImpl usersMapperImpl;
 
     public UsersService(UsersRepository usersRepository, UsersMapperImpl usersMapperImpl) {
         this.usersRepository = usersRepository;
