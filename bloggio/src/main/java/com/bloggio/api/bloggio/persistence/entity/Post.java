@@ -50,7 +50,7 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId", nullable = false)
-    private Users users;
+    private Users user;
 
     /*@ManyToOne(() => User, (user) => user.posts, {
             cascade: true,

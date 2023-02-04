@@ -1,18 +1,19 @@
 package com.bloggio.api.bloggio.dto;
 
+import com.bloggio.api.bloggio.payload.post.FKUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostDTO {
+public class PostSaveDTO {
 
     private UUID postId;
 
@@ -26,6 +27,8 @@ public class PostDTO {
 
     private Integer postPriority;
 
-    private UsersDTO users;
+    @NotNull
+    @FKUser
+    private UUID userId;
 
 }

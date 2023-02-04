@@ -1,7 +1,8 @@
 package com.bloggio.api.bloggio.service;
 
-import com.bloggio.api.bloggio.dto.PostDTO;
-import com.bloggio.api.bloggio.dto.UsersDTO;
+
+import com.bloggio.api.bloggio.dto.PostListDTO;
+import com.bloggio.api.bloggio.dto.PostSaveDTO;
 import com.bloggio.api.bloggio.mapper.PostMapperImpl;
 import com.bloggio.api.bloggio.persistence.entity.Post;
 import com.bloggio.api.bloggio.persistence.entity.Users;
@@ -10,8 +11,10 @@ import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 
 @Service
 @Log4j2
@@ -24,21 +27,18 @@ public class PostService {
     private final PostMapperImpl postMapper;
 
 
-    public PostService(PostRepository postRepository, UsersRepository usersRepository, PostMapperImpl postMapper) {
+    public PostService(PostRepository postRepository, UsersRepository usersRepository,
+                       PostMapperImpl postMapper) {
         this.postRepository = postRepository;
         this.usersRepository = usersRepository;
         this.postMapper = postMapper;
     }
 
-    public PostDTO create(PostDTO postDTO) throws Exception {
+    public PostSaveDTO create(PostSaveDTO postSaveDTO) {
         Post postSave = null;
 
-        if (!existsUsers(postDTO.getUsers())) {
-            throw new Exception("El usuario con id " + postDTO.getUsers().getUserId() + " no existe");
-        }
-
         try {
-            Post post = postMapper.postDtoToPost(postDTO);
+            Post post = postMapper.postDtoToPost(postSaveDTO);
             postSave = postRepository.save(post);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -48,8 +48,16 @@ public class PostService {
         return postMapper.postToPostDTO(postSave);
     }
 
-    private boolean existsUsers(UsersDTO usersDTO) {
-        Optional<Users> users = usersRepository.findById(UUID.fromString(usersDTO.getUserId()));
-        return users.isPresent();
+    public List<PostListDTO> findAll(){
+        return postMapper.postsToPostListDTO(postRepository.findAll());
     }
+
+    public PostListDTO findById(UUID postId){
+        Optional<Post> post = postRepository.findById(postId);
+        if (!post.isPresent()){
+            return null;
+        }
+        return postMapper.postToPostWithUserDTO(post.get());
+    }
+
 }
