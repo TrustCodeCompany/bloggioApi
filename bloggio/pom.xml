@@ -101,6 +101,19 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
+		<!--
+		Swagger : libreria de swagger que permite crear docuemntación de nuestro servicios -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -116,7 +129,7 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
-					<!--MapStruct-->
+					<!-- MapStruct -->
 					<annotationProcessorPaths>
 						<path>
 							<groupId>

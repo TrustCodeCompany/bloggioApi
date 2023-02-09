@@ -5,11 +5,19 @@ import com.bloggio.api.bloggio.mapper.UsersMapperImpl;
 import com.bloggio.api.bloggio.persistence.entity.Users;
 import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
 
-import java.util.List;
+import lombok.extern.log4j.Log4j2;
 
+import com.bloggio.api.bloggio.exception.Exception;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j2
 public class UsersService {
 
     private final UsersRepository usersRepository;
@@ -29,5 +37,20 @@ public class UsersService {
     public List<UsersDTO> getAll() {
         return usersMapperImpl.ListUsersToListUsersDTO(usersRepository.findAll());
     }
+
+    public void deleteByUserId(UUID userId) {
+        Optional<Users> findUsersByUserId = usersRepository.findById(userId);
+        if (!findUsersByUserId.isPresent()) {
+            log.error("User With Id Not Found");
+            throw new Exception("User Not Found", HttpStatus.NOT_FOUND);
+        }
+        usersRepository.deleteById(userId);
+        throw new Exception("User Removed Successful", HttpStatus.OK);
+    }
+
+    // login (jwt - spring security)
+    // reestablecer password
+    // actualizar informacion (dnickname , short bio , la foto)
+    // cambiar contraseña
 
 }
