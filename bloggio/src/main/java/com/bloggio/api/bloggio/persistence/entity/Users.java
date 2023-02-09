@@ -32,7 +32,7 @@ public class Users {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID userId;
 
-    @Column(name = "user_email", length = 60, nullable = false, unique = true)
+    @Column(name = "user_email", length = 40, nullable = false, unique = true)
     private String userEmail;
 
     @Column(name = "user_nickname", length = 30, nullable = false, unique = true)

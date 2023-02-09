@@ -31,10 +31,12 @@ public class UsersService {
 
     public UsersDTO create(UsersDTO usersDTO) {
         Users users = usersMapperImpl.usersDTOToUsers(usersDTO);
+        log.info("Create User Succesful");
         return usersMapperImpl.usersToUsersDTO(usersRepository.save(users));
     }
 
     public List<UsersDTO> getAll() {
+        log.info("Get All Users");
         return usersMapperImpl.ListUsersToListUsersDTO(usersRepository.findAll());
     }
 
@@ -50,7 +52,7 @@ public class UsersService {
 
     // login (jwt - spring security)
     // reestablecer password
-    // actualizar informacion (dnickname , short bio , la foto)
+    // actualizar informacion (nickname , short bio , la foto)
     // cambiar contraseña
 
 }

@@ -16,10 +16,11 @@ public class UsersMapperTest {
     public void usersSimpleTest() {
 
         Users users = new Users();
-        users.setUserNickname("Piero");
-        users.setUserPassword("Shalon25cm");
-        users.setUserPhoto("Shalon.png");
-        users.setUserShortBio("El mas shalon del grupo");
+        users.setUserEmail("piero@gmail.com");
+        users.setUserNickname("Piero2023");
+        users.setUserPassword("PieroBecerra");
+        users.setUserPhoto("Piero.png");
+        users.setUserShortBio("Perfil De Piero");
 
         UsersDTO usersDTO = mapper.usersToUsersDTO(users);
 
