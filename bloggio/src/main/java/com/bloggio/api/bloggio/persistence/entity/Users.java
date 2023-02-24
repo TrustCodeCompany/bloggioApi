@@ -1,12 +1,18 @@
 package com.bloggio.api.bloggio.persistence.entity;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -32,7 +38,10 @@ public class Users {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID userId;
 
-    @Column(name = "user_nickname", length = 30, nullable = false, unique = false)
+    @Column(name = "user_email", length = 40, nullable = false, unique = true)
+    private String userEmail;
+
+    @Column(name = "user_nickname", length = 30, nullable = false, unique = true)
     private String userNickname;
 
     @Column(name = "user_password", length = 20, nullable = false, unique = false)
@@ -44,10 +53,18 @@ public class Users {
     @Column(name = "user_short_bio", length = 200, nullable = true, unique = false)
     private String userShortBio;
 
-    @Column(name = "avi_f_create")
+    @Column(name = "user_f_create")
     private LocalDateTime userFCreate;
 
-    @Column(name = "avi_f_update")
+    @Column(name = "user_f_update")
     private LocalDateTime userFUpdate;
+
+    /*
+     * @ManyToMany(fetch = FetchType.LAZY)
+     * 
+     * @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
+     * inverseJoinColumns = @JoinColumn(name = "role_id"))
+     * private Set<Role> userRole = new HashSet<>();
+     */
 
 }
