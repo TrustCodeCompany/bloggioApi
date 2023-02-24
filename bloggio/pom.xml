@@ -28,6 +28,19 @@
 			<version>5.2.10.RELEASE</version>
 		</dependency>
 
+		<!-- Spring Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<!-- JWT -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
 		<!-- Spring Data JPA -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -102,7 +115,7 @@
 		</dependency>
 
 		<!--
-		Swagger : libreria de swagger que permite crear docuemntación de nuestro servicios -->
+		Swagger : libreria de swagger que permite crear documentación de nuestro servicios -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>

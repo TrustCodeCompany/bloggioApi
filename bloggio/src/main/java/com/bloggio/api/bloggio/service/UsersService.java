@@ -50,8 +50,8 @@ public class UsersService {
         throw new Exception("User Removed Successful", HttpStatus.OK);
     }
 
-    // login (jwt - spring security)
     // reestablecer password
+    // login (jwt - spring security)
     // actualizar informacion (nickname , short bio , la foto)
     // cambiar contraseña
 
