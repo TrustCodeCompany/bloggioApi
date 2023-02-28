@@ -24,10 +24,10 @@ public class CategoryDTO implements Serializable {
     // Validar que la categoria no sea repetida (UniqueCategory)
     @NotBlank(message = "Can not be blank")
     @NotNull(message = "Can not be null")
-    @Size(min = 30, max = 200, message = "The size should be between 30 to 200")
+    @Size(min = 4, max = 200, message = "The size should be between 30 to 200")
     private String categoryDesc;
 
     @NotNull
-    private boolean categoryState;
+    private Integer categoryState;
 
 }

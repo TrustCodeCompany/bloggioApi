@@ -36,7 +36,7 @@ public class Category {
     private String categoryDesc;
 
     @Column(name = "category_state", nullable = false, columnDefinition = "integer default 1")
-    private boolean categoryState;
+    private Integer categoryState;
 
     @Column(name = "category_f_create")
     private LocalDateTime categoryFCreate;

@@ -7,55 +7,42 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Post")
+@Table(name = "Comment")
 @NoArgsConstructor
 @Data
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Post {
+public class Comment {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID postId;
-
-    @Column(columnDefinition = "TEXT")
-    private String postContent;
-
-    @Column()
-    private String postTitle;
-
-    @Column()
-    private String postDescription;
+    private UUID commentId;
 
     @Column(columnDefinition = "integer default 1")
-    private Integer postState;
+    private Integer commentLikes;
+
+    @Column()
+    private String commentContent;
 
     @Column(columnDefinition = "integer default 1")
-    private Integer postPriority;
+    private Integer commentState;
 
-    @CreationTimestamp
-    private Date postTimestampCreate;
+    private UUID commentIdReply;
 
-    @UpdateTimestamp
-    private Date postTimestampUpdate;
+    private Date commentTimestampCreate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId", nullable = false)
-    private Users user;
-
+    private Date commentTimestampUpdate;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "categoryId", nullable = false)
-    private Category category;
+    @JoinColumn(name = "postId", nullable = false)
+    private Post post;
 
 }
-
