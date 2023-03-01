@@ -1,6 +1,5 @@
 package com.bloggio.api.bloggio.service;
 
-
 import com.bloggio.api.bloggio.dto.PostListDTO;
 import com.bloggio.api.bloggio.dto.PostSaveDTO;
 import com.bloggio.api.bloggio.mapper.PostMapperImpl;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-
 @Service
 @Log4j2
 public class PostService {
@@ -26,9 +24,8 @@ public class PostService {
 
     private final PostMapperImpl postMapper;
 
-
     public PostService(PostRepository postRepository, UsersRepository usersRepository,
-                       PostMapperImpl postMapper) {
+            PostMapperImpl postMapper) {
         this.postRepository = postRepository;
         this.usersRepository = usersRepository;
         this.postMapper = postMapper;
@@ -48,13 +45,13 @@ public class PostService {
         return postMapper.postToPostDTO(postSave);
     }
 
-    public List<PostListDTO> findAll(){
+    public List<PostListDTO> findAll() {
         return postMapper.postsToPostListDTO(postRepository.findAll());
     }
 
-    public PostListDTO findById(UUID postId){
+    public PostListDTO findById(UUID postId) {
         Optional<Post> post = postRepository.findById(postId);
-        if (!post.isPresent()){
+        if (!post.isPresent()) {
             return null;
         }
         return postMapper.postToPostWithUserDTO(post.get());

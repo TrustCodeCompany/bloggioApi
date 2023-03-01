@@ -22,53 +22,54 @@ import java.util.UUID;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Post {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID postId;
+        @Id
+        @GeneratedValue(generator = "UUID")
+        @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+        private UUID postId;
 
-    @Column(columnDefinition = "TEXT")
-    private String postContent;
+        @Column(columnDefinition = "TEXT")
+        private String postContent;
 
-    @Column()
-    private String postTitle;
+        @Column()
+        private String postTitle;
 
-    @Column()
-    private String postDescription;
+        @Column()
+        private String postDescription;
 
-    @Column(columnDefinition = "integer default 1")
-    private Integer postState;
+        @Column(columnDefinition = "integer default 1")
+        private Integer postState;
 
-    @Column(columnDefinition = "integer default 1")
-    private Integer postPriority;
+        @Column(columnDefinition = "integer default 1")
+        private Integer postPriority;
 
-    @CreationTimestamp
-    private Date postTimestampCreate;
+        @CreationTimestamp
+        private Date postTimestampCreate;
 
-    @UpdateTimestamp
-    private Date postTimestampUpdate;
+        @UpdateTimestamp
+        private Date postTimestampUpdate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId", nullable = false)
-    private Users user;
+        @ManyToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name = "userId", nullable = false)
+        private Users user;
 
-    /*@ManyToOne(() => User, (user) => user.posts, {
-            cascade: true,
-            eager: true
-            })
-    user: User;
-
-    @ManyToOne(() => Category, (category) => category.posts, {
-            cascade: true,
-            eager: true
-            })
-    category: Category;
-
-    @OneToMany(() => Comment, (comment) => comment.post, {
-            cascade: true,
-            eager: true
-            })
-    comment: Comment;*/
+        /*
+         * @ManyToOne(() => User, (user) => user.posts, {
+         * cascade: true,
+         * eager: true
+         * })
+         * user: User;
+         * 
+         * @ManyToOne(() => Category, (category) => category.posts, {
+         * cascade: true,
+         * eager: true
+         * })
+         * category: Category;
+         * 
+         * @OneToMany(() => Comment, (comment) => comment.post, {
+         * cascade: true,
+         * eager: true
+         * })
+         * comment: Comment;
+         */
 
 }
-
