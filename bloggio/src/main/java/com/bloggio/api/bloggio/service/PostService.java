@@ -54,10 +54,15 @@ public class PostService {
 
     public PostListDTO findById(UUID postId){
         Optional<Post> post = postRepository.findById(postId);
-        if (!post.isPresent()){
-            return null;
+        return post.map(postMapper::postToPostWithUserDTO).orElse(null);
+    }
+
+    public PostSaveDTO update(PostSaveDTO postSaveDTO){
+        Optional<Post> post = postRepository.findById(postSaveDTO.getPostId());
+        if (post.isPresent()){
+            postRepository.save(postMapper.postDtoToPost(post.get()));
         }
-        return postMapper.postToPostWithUserDTO(post.get());
+        return null;
     }
 
 }
