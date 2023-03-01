@@ -1,5 +1,6 @@
 package com.bloggio.api.bloggio.dto;
 
+import com.bloggio.api.bloggio.payload.post.FKCategory;
 import com.bloggio.api.bloggio.payload.post.FKUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,5 +31,9 @@ public class PostSaveDTO {
     @NotNull
     @FKUser
     private UUID userId;
+
+    @NotNull
+    @FKCategory
+    private UUID categoryId;
 
 }

@@ -14,9 +14,11 @@ import java.util.List;
 public interface PostMapper {
 
     @Mapping(target = "user.userId", source = "postDTO.userId")
+    @Mapping(target = "category.categoryId", source = "postDTO.categoryId")
     Post postDtoToPost(PostSaveDTO postDTO);
 
     @Mapping(target = "userId", source = "post.user.userId")
+    @Mapping(target = "categoryId", source = "post.category.categoryId")
     PostSaveDTO postToPostDTO(Post post);
 
     List<PostListDTO> postsToPostListDTO(List<Post> postList);

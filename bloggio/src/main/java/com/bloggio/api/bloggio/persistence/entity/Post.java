@@ -52,24 +52,8 @@ public class Post {
         @JoinColumn(name = "userId", nullable = false)
         private Users user;
 
-        /*
-         * @ManyToOne(() => User, (user) => user.posts, {
-         * cascade: true,
-         * eager: true
-         * })
-         * user: User;
-         * 
-         * @ManyToOne(() => Category, (category) => category.posts, {
-         * cascade: true,
-         * eager: true
-         * })
-         * category: Category;
-         * 
-         * @OneToMany(() => Comment, (comment) => comment.post, {
-         * cascade: true,
-         * eager: true
-         * })
-         * comment: Comment;
-         */
+        @ManyToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name = "categoryId", nullable = false)
+        private Category category;
 
 }
