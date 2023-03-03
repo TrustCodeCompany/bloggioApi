@@ -7,13 +7,9 @@ import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
 
 import lombok.extern.log4j.Log4j2;
 
-import com.bloggio.api.bloggio.exception.Exception;
-
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,7 +27,7 @@ public class UsersService {
 
     public UsersDTO create(UsersDTO usersDTO) {
         Users users = usersMapperImpl.usersDTOToUsers(usersDTO);
-        log.info("Create User Succesful");
+        log.info("Create User Successful");
         return usersMapperImpl.usersToUsersDTO(usersRepository.save(users));
     }
 
@@ -40,14 +36,17 @@ public class UsersService {
         return usersMapperImpl.ListUsersToListUsersDTO(usersRepository.findAll());
     }
 
-    public void deleteByUserId(UUID userId) {
-        Optional<Users> findUsersByUserId = usersRepository.findById(userId);
-        if (!findUsersByUserId.isPresent()) {
-            log.error("User With Id Not Found");
-            throw new Exception("User Not Found", HttpStatus.NOT_FOUND);
-        }
-        usersRepository.deleteById(userId);
-        throw new Exception("User Removed Successful", HttpStatus.OK);
+    public List<UsersDTO> getAllActivated() {
+        log.info("Get All Activated Users");
+        return usersMapperImpl.ListUsersToListUsersDTO(
+                usersRepository.findAll().stream().filter(item -> item.getUserState() == 1)
+                        .collect(Collectors.toList()));
+    }
+
+    public List<UsersDTO> getAllDeactivated() {
+        log.info("Get All Deactivated Users");
+        return usersMapperImpl.ListUsersToListUsersDTO(usersRepository.findAll().stream()
+                .filter(item -> item.getUserState() == 0).collect(Collectors.toList()));
     }
 
     // reestablecer password

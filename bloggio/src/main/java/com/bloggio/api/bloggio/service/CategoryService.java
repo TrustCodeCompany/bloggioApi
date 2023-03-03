@@ -53,13 +53,15 @@ public class CategoryService {
                 .filter(item -> item.getCategoryState() == 0).collect(Collectors.toList()));
     }
 
-    public void updateById(CategoryDTO categoryDTO) {
-        Optional<Category> findCategoryById = categoryRepository.findById(categoryDTO.getCategoryId());
+    public void updateById(UUID categoryId, CategoryDTO categoryDTO) {
+        Optional<Category> findCategoryById = categoryRepository.findById(categoryId);
         if (!findCategoryById.isPresent()) {
             log.error("Error");
             throw new Exception("Category Not Found", HttpStatus.NOT_FOUND);
         }
         Category updaCategory = findCategoryById.get();
+        updaCategory.setCategoryDesc(categoryDTO.getCategoryDesc());
+        updaCategory.setCategoryState(categoryDTO.getCategoryState());
         log.info("Update Successful");
         categoryRepository.save(updaCategory);
         throw new Exception("Category Update Successful", HttpStatus.OK);

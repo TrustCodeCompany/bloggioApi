@@ -4,18 +4,15 @@ import com.bloggio.api.bloggio.dto.UsersDTO;
 import com.bloggio.api.bloggio.service.UsersService;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,9 +35,14 @@ public class UsersController {
         return ResponseEntity.status(HttpStatus.OK).body(usersService.getAll());
     }
 
-    @DeleteMapping("/DeleteByUserId/{userId}")
-    public void DeleteByUserId(@RequestParam UUID userId) {
-        usersService.deleteByUserId(userId);
+    @GetMapping("/GetAllActivated")
+    public ResponseEntity<List<UsersDTO>> GetAllActivated() {
+        return ResponseEntity.status(HttpStatus.OK).body(usersService.getAllActivated());
+    }
+
+    @GetMapping("/GetAllDeactivated")
+    public ResponseEntity<List<UsersDTO>> GetAllDeactivated() {
+        return ResponseEntity.status(HttpStatus.OK).body(usersService.getAllDeactivated());
     }
 
 }

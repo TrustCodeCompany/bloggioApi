@@ -47,8 +47,8 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.getAllDeactivated());
     }
 
-    @PostMapping("/UpdateById")
-    public void UpdateById(@Valid @RequestBody CategoryDTO categoryDTO) {
-        categoryService.updateById(categoryDTO);
+    @PutMapping("/UpdateById")
+    public void UpdateById(@RequestParam UUID categoryId, @Valid @RequestBody CategoryDTO categoryDTO) {
+        categoryService.updateById(categoryId, categoryDTO);
     }
 }

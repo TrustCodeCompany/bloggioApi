@@ -48,4 +48,6 @@ public class UsersDTO implements Serializable {
     @Size(min = 0, max = 200, message = "The size must not exceed 200 characters")
     private String userShortBio;
 
+    private Integer userState;
+
 }

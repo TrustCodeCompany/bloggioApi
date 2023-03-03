@@ -1,18 +1,12 @@
 package com.bloggio.api.bloggio.persistence.entity;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -54,6 +48,9 @@ public class Users {
 
     @Column(name = "user_short_bio", length = 200, nullable = true, unique = false)
     private String userShortBio;
+
+    @Column(name = "user_state", nullable = false, columnDefinition = "integer default 1")
+    private Integer userState;
 
     @Column(name = "user_f_create", updatable = false)
     @CreationTimestamp
