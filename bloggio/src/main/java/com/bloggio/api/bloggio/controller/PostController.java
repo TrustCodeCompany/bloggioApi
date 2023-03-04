@@ -28,17 +28,23 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostListDTO>> findAll(){
+    public ResponseEntity<List<PostListDTO>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(postService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostListDTO> findById(@PathVariable("id") UUID uuid){
+    public ResponseEntity<PostListDTO> findById(@PathVariable("id") UUID uuid) {
         PostListDTO post = postService.findById(uuid);
-        if (post == null){
+        if (post == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         return ResponseEntity.status(HttpStatus.OK).body(post);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PostSaveDTO> updateById(@PathVariable("id") UUID id,
+                                                  @Valid @RequestBody PostSaveDTO postSaveDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.update(id, postSaveDTO));
     }
 
 
