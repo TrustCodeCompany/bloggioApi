@@ -1,6 +1,5 @@
 package com.bloggio.api.bloggio.controller;
 
-
 import com.bloggio.api.bloggio.dto.PostListDTO;
 import com.bloggio.api.bloggio.dto.PostSaveDTO;
 import com.bloggio.api.bloggio.service.PostService;

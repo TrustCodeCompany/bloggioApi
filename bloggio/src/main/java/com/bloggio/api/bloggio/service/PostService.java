@@ -30,7 +30,7 @@ public class PostService {
 
 
     public PostService(PostRepository postRepository, UsersRepository usersRepository,
-                       PostMapperImpl postMapper) {
+            PostMapperImpl postMapper) {
         this.postRepository = postRepository;
         this.usersRepository = usersRepository;
         this.postMapper = postMapper;
@@ -50,11 +50,11 @@ public class PostService {
         return postMapper.postToPostDTO(postSave);
     }
 
-    public List<PostListDTO> findAll(){
+    public List<PostListDTO> findAll() {
         return postMapper.postsToPostListDTO(postRepository.findAll());
     }
 
-    public PostListDTO findById(UUID postId){
+    public PostListDTO findById(UUID postId) {
         Optional<Post> post = postRepository.findById(postId);
         return post.map(postMapper::postToPostWithUserDTO).orElse(null);
     }

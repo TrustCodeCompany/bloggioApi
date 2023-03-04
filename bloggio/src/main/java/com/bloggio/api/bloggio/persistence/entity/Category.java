@@ -1,6 +1,6 @@
 package com.bloggio.api.bloggio.persistence.entity;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -9,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -32,16 +34,18 @@ public class Category {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID categoryId;
 
-    @Column(name = "category_desc", length = 200, nullable = false, unique = false)
+    @Column(name = "category_desc", length = 30, nullable = false, unique = false)
     private String categoryDesc;
 
     @Column(name = "category_state", nullable = false, columnDefinition = "integer default 1")
     private Integer categoryState;
 
-    @Column(name = "category_f_create")
-    private LocalDateTime categoryFCreate;
+    @Column(name = "category_f_create", updatable = false)
+    @CreationTimestamp
+    private Timestamp categoryFCreate;
 
-    @Column(name = "category_f_update")
-    private LocalDateTime categoryFUpdate;
+    @Column(name = "category_f_update", insertable = false)
+    @UpdateTimestamp
+    private Timestamp categoryFUpdate;
 
 }

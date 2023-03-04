@@ -1,21 +1,17 @@
 package com.bloggio.api.bloggio.persistence.entity;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -53,11 +49,16 @@ public class Users {
     @Column(name = "user_short_bio", length = 200, nullable = true, unique = false)
     private String userShortBio;
 
-    @Column(name = "user_f_create")
-    private LocalDateTime userFCreate;
+    @Column(name = "user_state", nullable = false, columnDefinition = "integer default 1")
+    private Integer userState;
 
-    @Column(name = "user_f_update")
-    private LocalDateTime userFUpdate;
+    @Column(name = "user_f_create", updatable = false)
+    @CreationTimestamp
+    private Timestamp userFCreate;
+
+    @Column(name = "user_f_update", insertable = false)
+    @UpdateTimestamp
+    private Timestamp userFUpdate;
 
     /*
      * @ManyToMany(fetch = FetchType.LAZY)
