@@ -1,13 +1,20 @@
 package com.bloggio.api.bloggio.persistence.entity;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -21,7 +28,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "user_email"),
+        @UniqueConstraint(columnNames = "user_nickname") })
 @NoArgsConstructor
 @Data
 @Builder
@@ -36,6 +44,11 @@ public class Users {
 
     @Column(name = "user_email", length = 40, nullable = false, unique = true)
     private String userEmail;
+
+    /*
+     * @Column(name = "user_username", length = 40, nullable = false, unique = true)
+     * private String userUsername;
+     */
 
     @Column(name = "user_nickname", length = 30, nullable = false, unique = true)
     private String userNickname;
@@ -60,12 +73,14 @@ public class Users {
     @UpdateTimestamp
     private Timestamp userFUpdate;
 
-    /*
-     * @ManyToMany(fetch = FetchType.LAZY)
-     * 
-     * @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
-     * inverseJoinColumns = @JoinColumn(name = "role_id"))
-     * private Set<Role> userRole = new HashSet<>();
-     */
+    public Users(String userEmail, String userNickname, String userPassword) {
+        this.userEmail = userEmail;
+        this.userNickname = userNickname;
+        this.userPassword = userPassword;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
 }
