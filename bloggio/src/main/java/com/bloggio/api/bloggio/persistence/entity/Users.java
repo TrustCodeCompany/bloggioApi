@@ -53,7 +53,7 @@ public class Users {
     @Column(name = "user_nickname", length = 30, nullable = false, unique = true)
     private String userNickname;
 
-    @Column(name = "user_password", length = 20, nullable = false, unique = false)
+    @Column(name = "user_password", length = 100, nullable = false, unique = false)
     private String userPassword;
 
     @Column(name = "user_photo", length = 20, nullable = true, unique = false)
@@ -77,6 +77,7 @@ public class Users {
         this.userEmail = userEmail;
         this.userNickname = userNickname;
         this.userPassword = userPassword;
+        this.userState = 1;
     }
 
     @ManyToMany(fetch = FetchType.LAZY)
