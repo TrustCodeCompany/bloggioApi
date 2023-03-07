@@ -28,6 +28,8 @@ public class PostSaveDTO {
 
     private Integer postPriority;
 
+    private Integer postLikes;
+
     @NotNull
     @FKUser
     private UUID userId;
