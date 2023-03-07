@@ -40,4 +40,11 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(post);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<PostSaveDTO> updateById(@PathVariable("id") UUID id,
+                                                  @Valid @RequestBody PostSaveDTO postSaveDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.update(id, postSaveDTO));
+    }
+
+
 }

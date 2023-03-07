@@ -10,6 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
@@ -42,11 +43,16 @@ public class Post {
         @Column(columnDefinition = "integer default 1")
         private Integer postPriority;
 
+        @Column(updatable = false)
         @CreationTimestamp
-        private Date postTimestampCreate;
+        private Timestamp postTimestampCreate;
 
+        @Column(insertable = false)
         @UpdateTimestamp
-        private Date postTimestampUpdate;
+        private Timestamp postTimestampUpdate;
+
+        @Column(name = "likes")
+        private Integer postLikes;
 
         @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "userId", nullable = false)
