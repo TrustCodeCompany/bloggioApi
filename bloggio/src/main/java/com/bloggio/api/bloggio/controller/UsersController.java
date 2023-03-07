@@ -3,12 +3,15 @@ package com.bloggio.api.bloggio.controller;
 import com.bloggio.api.bloggio.dto.UsersDTO;
 import com.bloggio.api.bloggio.service.UsersService;
 
+import io.swagger.annotations.Authorization;
+
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +34,7 @@ public class UsersController {
     }
 
     @GetMapping("/GetAll")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<List<UsersDTO>> GetAll() {
         return ResponseEntity.status(HttpStatus.OK).body(usersService.getAll());
     }

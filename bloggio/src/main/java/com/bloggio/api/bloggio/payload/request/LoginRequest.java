@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 public class LoginRequest {
 
     @NotBlank
-    private String usernickname;
+    private String userNickname;
 
     @NotBlank
-    private String password;
+    private String userPassword;
 
 }

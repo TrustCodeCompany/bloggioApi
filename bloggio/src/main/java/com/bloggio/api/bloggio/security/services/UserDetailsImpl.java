@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
 public class UserDetailsImpl implements UserDetails {
 
@@ -28,9 +27,9 @@ public class UserDetailsImpl implements UserDetails {
 
     private UUID UserId;
 
-    private String UserNickname;
-
     private String UserEmail;
+
+    private String UserNickname;
 
     @JsonIgnore
     private String UserPassword;
@@ -44,13 +43,28 @@ public class UserDetailsImpl implements UserDetails {
 
         return new UserDetailsImpl(
                 users.getUserId(),
-                users.getUserNickname(),
                 users.getUserEmail(),
+                users.getUserNickname(),
                 users.getUserPassword(),
                 authorities);
     }
 
-    @Override
+    public UUID getUserId() {
+        return UserId;
+    }
+
+    public String getUserEmail() {
+        return UserEmail;
+    }
+
+    public String getUserNickname() {
+        return UserNickname;
+    }
+
+    public String getUserPassword() {
+        return UserPassword;
+    }
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
@@ -87,14 +101,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
+        return UserPassword;
     }
 
     @Override
     public String getUsername() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
+        return UserNickname;
     }
 
 }
