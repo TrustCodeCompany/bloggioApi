@@ -39,13 +39,15 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.bloggio.api.bloggio.controller"))
+                // .apis(RequestHandlerSelectors.basePackage("com.bloggio.api.bloggio.controller")
+                .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo());
+                .build();
+
     }
 
     private ApiInfo apiInfo() {

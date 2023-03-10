@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
@@ -90,16 +89,6 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        UserDetailsImpl user = (UserDetailsImpl) o;
-        return Objects.equals(UserId, user.UserId);
-    }
-
-    @Override
     public String getPassword() {
         return UserPassword;
     }
@@ -107,6 +96,16 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public String getUsername() {
         return UserNickname;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        UserDetailsImpl user = (UserDetailsImpl) o;
+        return Objects.equals(UserId, user.UserId);
     }
 
 }

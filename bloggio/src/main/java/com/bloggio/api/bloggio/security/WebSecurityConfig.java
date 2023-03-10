@@ -23,8 +23,8 @@ import com.bloggio.api.bloggio.security.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableGlobalMethodSecurity(
-         //securedEnabled = true,
-         //jsr250Enabled = true,
+        // securedEnabled = true,
+        // jsr250Enabled = true,
         prePostEnabled = true)
 public class WebSecurityConfig {
 
@@ -64,7 +64,8 @@ public class WebSecurityConfig {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/**").permitAll()
+                .authorizeRequests().antMatchers("**").permitAll()
+                .antMatchers("**").permitAll()
                 .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());

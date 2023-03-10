@@ -34,7 +34,7 @@ public class UsersController {
     }
 
     @GetMapping("/GetAll")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize(value = "hasRole('T_ROLE_USER')")
     public ResponseEntity<List<UsersDTO>> GetAll() {
         return ResponseEntity.status(HttpStatus.OK).body(usersService.getAll());
     }
