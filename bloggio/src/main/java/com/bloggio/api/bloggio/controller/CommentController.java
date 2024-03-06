@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/Comment")
+@RequestMapping("/api/v1/Comment")
 public class CommentController {
 
     private final CommentService commentService;

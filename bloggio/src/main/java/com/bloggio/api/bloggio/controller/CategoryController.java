@@ -18,7 +18,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/Category")
+@RequestMapping("/api/v1/Category")
 public class CategoryController {
 
     private final CategoryService categoryService;
