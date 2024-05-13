@@ -34,8 +34,14 @@ public class Category {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID categoryId;
 
-    @Column(name = "category_desc", length = 30, nullable = false, unique = false)
+    @Column(name = "category_name", length = 100, nullable = false, unique = true)
+    private String categoryName;
+
+    @Column(name = "category_desc", length = 500, nullable = false, unique = false)
     private String categoryDesc;
+
+    @Column(name = "category_image", length = 100, nullable = false)
+    private String categoryImage;
 
     @Column(name = "category_state", nullable = false, columnDefinition = "integer default 1")
     private Integer categoryState;

@@ -24,11 +24,15 @@ public class CategoryDTO implements Serializable {
 
     private UUID categoryId;
 
+    private String categoryName;
+
     @NotBlank(message = "Can not be blank")
     @NotNull(message = "Can not be null")
     @Size(min = 5, max = 30, message = "The size should be between 5 to 30")
     @UniqueCategoryDesc
     private String categoryDesc;
+
+    private String categoryImage;
 
     private Integer categoryState;
 

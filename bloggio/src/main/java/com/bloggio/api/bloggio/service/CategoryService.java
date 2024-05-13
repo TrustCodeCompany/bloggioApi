@@ -55,12 +55,14 @@ public class CategoryService {
 
     public void updateById(UUID categoryId, CategoryDTO categoryDTO) {
         Optional<Category> findCategoryById = categoryRepository.findById(categoryId);
-        if (!findCategoryById.isPresent()) {
+        if (findCategoryById.isEmpty()) {
             log.error("Error");
             throw new Exception("Category Not Found", HttpStatus.NOT_FOUND);
         }
         Category updaCategory = findCategoryById.get();
+        updaCategory.setCategoryName(categoryDTO.getCategoryName());
         updaCategory.setCategoryDesc(categoryDTO.getCategoryDesc());
+        updaCategory.setCategoryImage(categoryDTO.getCategoryImage());
         updaCategory.setCategoryState(categoryDTO.getCategoryState());
         log.info("Update Successful");
         categoryRepository.save(updaCategory);
