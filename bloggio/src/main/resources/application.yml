@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: "bloggio-api"
+  datasource:
+    url: jdbc:postgresql://dpg-cnjtraljm4es73emgceg-a.oregon-postgres.render.com/blog_hoyj
+    username: blog_hoyj_user
+    password: f2HM7uet8NbcOUD2IYQYlganDquS3ZFH
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+      javax:
+        persistence:
+          validation:
+            mode: none
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+server:
+  port: 8080
+bloggio:
+  app:
+    jwtSecret: "bloggioSecretKey"
+    jwtExpirationMs: 86400000
+cloudinary:
+  cloud_name: "dbxivsisb"
+  api_key: "559448955182318"
+  api_secret: "nzq94PvMyd1AGVyVSE36RATj69w"

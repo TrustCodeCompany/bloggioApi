@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/Category")
-@CrossOrigin("*")
+@CrossOrigin
 public class CategoryController {
 
     private final CategoryService categoryService;

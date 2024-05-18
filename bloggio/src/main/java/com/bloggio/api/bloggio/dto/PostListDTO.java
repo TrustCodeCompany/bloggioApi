@@ -26,5 +26,7 @@ public class PostListDTO {
 
     private Integer postPriority;
 
+    private String postImage;
+
     private Users user;
 }

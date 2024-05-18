@@ -11,7 +11,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -36,6 +35,10 @@ public class Post {
 
         @Column()
         private String postDescription;
+
+        private String postImage;
+
+        private Integer published;
 
         @Column(columnDefinition = "integer default 1")
         private Integer postState;
