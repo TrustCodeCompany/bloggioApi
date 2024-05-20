@@ -1,4 +1,4 @@
-package com.bloggio.api.bloggio.payload.post.response;
+package com.bloggio.api.bloggio.dto.post.response;
 
 import lombok.Builder;
 import lombok.Data;

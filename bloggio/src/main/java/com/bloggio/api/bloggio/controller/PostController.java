@@ -2,25 +2,25 @@ package com.bloggio.api.bloggio.controller;
 
 import com.bloggio.api.bloggio.dto.PostListDTO;
 import com.bloggio.api.bloggio.dto.PostSaveDTO;
+import com.bloggio.api.bloggio.dto.post.response.PostByFilterResponse;
+import com.bloggio.api.bloggio.dto.post.response.PostResponse;
 import com.bloggio.api.bloggio.payload.post.request.CreatePostRequest;
-import com.bloggio.api.bloggio.payload.post.response.PostResponse;
+
+import com.bloggio.api.bloggio.payload.post.request.PostByFiltersRequest;
+import com.bloggio.api.bloggio.persistence.projection.PostByFilters;
 import com.bloggio.api.bloggio.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.io.FileInputStream;
-import java.io.IOException;
+import javax.validation.constraints.Max;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -47,6 +47,21 @@ public class PostController {
     @GetMapping
     public ResponseEntity<List<PostListDTO>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(postService.findAll());
+    }
+
+    @PostMapping("/find-all-by-filters")
+    public ResponseEntity<PostByFilterResponse> findAllByFilters(@RequestBody PostByFiltersRequest postByFiltersRequest) {
+
+        var response = postService.getAllPostByFilters(
+                postByFiltersRequest.getOffset(), postByFiltersRequest.getLimit(), postByFiltersRequest.getCategoryName(),
+                postByFiltersRequest.getPostTitle(), postByFiltersRequest.getDate_start(), postByFiltersRequest.getDate_end());
+
+        return ResponseEntity.status(HttpStatus.OK).body(PostByFilterResponse.builder()
+                .data(response)
+                .limit(postByFiltersRequest.getLimit())
+                .page(postByFiltersRequest.getOffset())
+                .total(CollectionUtils.isNotEmpty(response) ? response.get(0).getFullCount() : 0)
+                .build());
     }
 
     @GetMapping("/{id}")

@@ -6,6 +6,7 @@ import com.bloggio.api.bloggio.dto.PostSaveDTO;
 import com.bloggio.api.bloggio.exception.Exception;
 import com.bloggio.api.bloggio.mapper.PostMapperImpl;
 import com.bloggio.api.bloggio.persistence.entity.Post;
+import com.bloggio.api.bloggio.persistence.projection.PostByFilters;
 import com.bloggio.api.bloggio.persistence.repository.PostRepository;
 import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
 import com.cloudinary.Cloudinary;
@@ -17,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -98,6 +101,24 @@ public class PostService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<PostByFilters> getAllPostByFilters(int offset, int limit, String category_name, String post_title,
+                                                   String post_creation_start, String post_creation_end){
+        //
+        String categoryFormat = String.format("%%%s%%", category_name);
+        String postFormat = String.format("%%%s%%", post_title);
+        return postRepository.getAllPostByFilter(offset, limit, categoryFormat, postFormat, convertToLocalDate(post_creation_start), convertToLocalDate(post_creation_end));
+
+    }
+
+    private LocalDate convertToLocalDate(String date){
+        final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        if(Objects.nonNull(date) && !date.isEmpty()) {
+            return LocalDate.parse(date, dtf);
+        }
+
+        return null;
     }
 
 }
