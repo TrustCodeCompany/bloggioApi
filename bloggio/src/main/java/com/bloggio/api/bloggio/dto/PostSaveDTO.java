@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.UUID;
 
 @Data
@@ -30,6 +29,7 @@ public class PostSaveDTO {
     private Integer postPriority;
 
     private String postImage;
+
     private Integer published;
 
     @NotNull

@@ -28,13 +28,13 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    @PostMapping("/Create")
+    /*@PostMapping("/Create")
     public ResponseEntity<UsersDTO> Create(@Valid @RequestBody UsersDTO usersDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(usersService.create(usersDTO));
-    }
+    }*/
 
     @GetMapping("/GetAll")
-    @PreAuthorize(value = "hasRole('T_ROLE_USER')")
+    //@PreAuthorize(value = "hasRole('T_ROLE_USER')")
     public ResponseEntity<List<UsersDTO>> GetAll() {
         return ResponseEntity.status(HttpStatus.OK).body(usersService.getAll());
     }

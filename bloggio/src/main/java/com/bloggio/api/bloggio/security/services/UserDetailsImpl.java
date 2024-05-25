@@ -33,9 +33,14 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String UserPassword;
 
+    private String userPhoto;
+
+    private String userShortBio;
+
     private Collection<? extends GrantedAuthority> authorities;
 
     public static UserDetailsImpl build(Users users) {
+
         List<GrantedAuthority> authorities = users.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
@@ -45,6 +50,8 @@ public class UserDetailsImpl implements UserDetails {
                 users.getUserEmail(),
                 users.getUserNickname(),
                 users.getUserPassword(),
+                users.getUserPhoto(),
+                users.getUserShortBio(),
                 authorities);
     }
 
@@ -63,6 +70,10 @@ public class UserDetailsImpl implements UserDetails {
     public String getUserPassword() {
         return UserPassword;
     }
+
+    public String getUserPhoto() { return userPhoto; }
+
+    public String getUserShortBio() { return userShortBio; }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

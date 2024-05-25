@@ -25,11 +25,11 @@ public class UsersService {
         this.usersMapperImpl = usersMapperImpl;
     }
 
-    public UsersDTO create(UsersDTO usersDTO) {
+    /*public UsersDTO create(UsersDTO usersDTO) {
         Users users = usersMapperImpl.usersDTOToUsers(usersDTO);
         log.info("Create User Successful");
         return usersMapperImpl.usersToUsersDTO(usersRepository.save(users));
-    }
+    }*/
 
     public List<UsersDTO> getAll() {
         log.info("Get All Users");
@@ -48,10 +48,5 @@ public class UsersService {
         return usersMapperImpl.ListUsersToListUsersDTO(usersRepository.findAll().stream()
                 .filter(item -> item.getUserState() == 0).collect(Collectors.toList()));
     }
-
-    // reestablecer password
-    // login (jwt - spring security)
-    // actualizar informacion (nickname , short bio , la foto)
-    // cambiar contraseña
 
 }

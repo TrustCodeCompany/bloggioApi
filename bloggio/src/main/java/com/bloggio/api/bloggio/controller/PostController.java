@@ -6,8 +6,8 @@ import com.bloggio.api.bloggio.dto.post.response.PostByFilterResponse;
 import com.bloggio.api.bloggio.dto.post.response.PostResponse;
 import com.bloggio.api.bloggio.payload.post.request.CreatePostRequest;
 
+import com.bloggio.api.bloggio.payload.post.request.PostByDateAndPageRequest;
 import com.bloggio.api.bloggio.payload.post.request.PostByFiltersRequest;
-import com.bloggio.api.bloggio.persistence.projection.PostByFilters;
 import com.bloggio.api.bloggio.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -18,9 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -47,6 +44,25 @@ public class PostController {
     @GetMapping
     public ResponseEntity<List<PostListDTO>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(postService.findAll());
+    }
+
+    @GetMapping("/GetTop4Post")
+    public ResponseEntity<List<PostListDTO>> getTop4Post() {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.getTop4Post());
+    }
+
+    @PostMapping("/GetAllPostByDateAndPage")
+    public ResponseEntity<PostByFilterResponse> GetAllPostByDateAndPage(@RequestBody PostByDateAndPageRequest postByDateAndPageRequest) {
+
+        var response = postService.getAllPostByDateAndPage(
+                postByDateAndPageRequest.getOffset(), postByDateAndPageRequest.getLimit());
+
+        return ResponseEntity.status(HttpStatus.OK).body(PostByFilterResponse.builder()
+                .data(response)
+                .limit(postByDateAndPageRequest.getLimit())
+                .page(postByDateAndPageRequest.getOffset())
+                .total(CollectionUtils.isNotEmpty(response) ? response.get(0).getFullCount() : 0)
+                .build());
     }
 
     @PostMapping("/find-all-by-filters")
@@ -78,7 +94,6 @@ public class PostController {
                                                   @Valid @RequestBody PostSaveDTO postSaveDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(postService.update(id, postSaveDTO));
     }
-
 
     @SneakyThrows
     public PostSaveDTO convert(String source) {

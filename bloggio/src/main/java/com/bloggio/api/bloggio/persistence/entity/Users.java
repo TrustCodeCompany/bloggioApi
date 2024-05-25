@@ -42,21 +42,16 @@ public class Users {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID userId;
 
-    @Column(name = "user_email", length = 40, nullable = false, unique = true)
+    @Column(name = "user_email", length = 100, nullable = false, unique = true)
     private String userEmail;
 
-    /*
-     * @Column(name = "user_username", length = 40, nullable = false, unique = true)
-     * private String userUsername;
-     */
-
-    @Column(name = "user_nickname", length = 30, nullable = false, unique = true)
+    @Column(name = "user_nickname", length = 100, nullable = false, unique = true)
     private String userNickname;
 
     @Column(name = "user_password", length = 100, nullable = false, unique = false)
     private String userPassword;
 
-    @Column(name = "user_photo", length = 20, nullable = true, unique = false)
+    @Column(name = "user_photo", length = 100, nullable = true, unique = false)
     private String userPhoto;
 
     @Column(name = "user_short_bio", length = 200, nullable = true, unique = false)
