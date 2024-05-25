@@ -3,10 +3,13 @@ package com.bloggio.api.bloggio.controller;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.bloggio.api.bloggio.dto.UsersUpdateDTO;
+import com.bloggio.api.bloggio.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,11 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.bloggio.api.bloggio.payload.request.LoginRequest;
 import com.bloggio.api.bloggio.payload.request.SignupRequest;
@@ -52,6 +51,12 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -60,16 +65,18 @@ public class AuthController {
                         loginRequest.getUserPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
         return ResponseEntity
                 .ok(new JwtResponse(jwt, "Bearer", userDetails.getUserId(), userDetails.getUserNickname(),
-                        userDetails.getUserEmail(), roles));
+                        userDetails.getUserEmail(), userDetails.getUserPhoto(), userDetails.getUserShortBio(), roles));
     }
 
     @PostMapping("/signup")
@@ -120,6 +127,11 @@ public class AuthController {
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @PutMapping("/UpdateById")
+    public void UpdateById(@RequestParam UUID userId, @Valid @RequestBody UsersUpdateDTO usersUpdateDTO) {
+         authService.updateById(userId, usersUpdateDTO);
     }
 
 }

@@ -12,19 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class JwtResponse {
 
-    /*
-     * private String token;
-     * private String type = "Bearer";
-     * private Long id;
-     * private String usernickname;
-     * private String email;
-     * private List<String> roles;
-     */
-
     private String token;
     private String type = "Bearer";
     private UUID userId;
     private String userNickname;
     private String userEmail;
+    private String userPhoto;
+    private String userShortBio;
     private List<String> roles;
+
 }

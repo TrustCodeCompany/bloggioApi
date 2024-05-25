@@ -1,6 +1,5 @@
 package com.bloggio.api.bloggio.service;
 
-
 import com.bloggio.api.bloggio.dto.PostListDTO;
 import com.bloggio.api.bloggio.dto.PostSaveDTO;
 import com.bloggio.api.bloggio.exception.Exception;
@@ -58,6 +57,10 @@ public class PostService {
         return postMapper.postsToPostListDTO(postRepository.findAll());
     }
 
+    public List<PostListDTO> getTop4Post(){
+        return postMapper.postsToPostListDTO(postRepository.findTop4ByOrderByPostLikesDesc());
+    }
+
     public PostListDTO findById(UUID postId) {
         Optional<Post> post = postRepository.findById(postId);
         return post.map(postMapper::postToPostWithUserDTO).orElse(null);
@@ -103,13 +106,16 @@ public class PostService {
         }
     }
 
+    public List<PostByFilters> getAllPostByDateAndPage(int offset, int limit) {
+        return postRepository.getAllPostByDateAndPage(offset, limit);
+    }
+
     public List<PostByFilters> getAllPostByFilters(int offset, int limit, String category_name, String post_title,
                                                    String post_creation_start, String post_creation_end){
         //
         String categoryFormat = String.format("%%%s%%", category_name);
         String postFormat = String.format("%%%s%%", post_title);
         return postRepository.getAllPostByFilter(offset, limit, categoryFormat, postFormat, convertToLocalDate(post_creation_start), convertToLocalDate(post_creation_end));
-
     }
 
     private LocalDate convertToLocalDate(String date){

@@ -13,6 +13,20 @@ import java.util.UUID;
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
+    List<Post> findTop4ByOrderByPostLikesDesc();
+
+    @Query(value = "select cast(p.post_id as text) as postId, p.post_content as postContent, p.post_description as postDescription, p.likes,\n" +
+            "p.post_priority as postPriority, p.post_state as postState, p.post_timestamp_create as postCreated,\n" +
+            "p.post_title as postTitle, p.post_image as postImage, p.published, c.category_name as categoryName, cast(u.user_id as text) as userId, u.user_nickname as userNickname,\n" +
+            "count(*) OVER() AS fullCount\n" +
+            "from post p \n" +
+            "join category c on c.category_id = p.category_id \n" +
+            "join users u on u.user_id = p.user_id \n" +
+            "order by p.post_timestamp_create desc \n" +
+            "OFFSET (?1-1)*?2 \n" +
+            "LIMIT ?2", nativeQuery = true)
+    List<PostByFilters> getAllPostByDateAndPage(int offset, int limit);
+
     @Query(value = "select cast(p.post_id as text) as postId, p.post_content as postContent, p.post_description as postDescription, p.likes,\n" +
             "p.post_priority as postPriority, p.post_state as postState, p.post_timestamp_create as postCreated,\n" +
             "p.post_title as postTitle, p.post_image as postImage, p.published, c.category_name as categoryName, cast(u.user_id as text) as userId, u.user_nickname as userNickname,\n" +

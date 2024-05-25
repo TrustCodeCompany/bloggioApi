@@ -4,6 +4,7 @@ import com.bloggio.api.bloggio.dto.PostListDTO;
 import com.bloggio.api.bloggio.dto.PostSaveDTO;
 import com.bloggio.api.bloggio.persistence.entity.Post;
 import org.mapstruct.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 

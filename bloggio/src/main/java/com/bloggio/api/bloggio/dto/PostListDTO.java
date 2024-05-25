@@ -29,4 +29,5 @@ public class PostListDTO {
     private String postImage;
 
     private Users user;
+
 }
