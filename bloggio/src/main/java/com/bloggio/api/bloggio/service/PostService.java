@@ -39,12 +39,30 @@ public class PostService {
 
     public String create(PostSaveDTO postSaveDTO, MultipartFile file) {
         Post postSave;
-
+        log.info("try save");
         try {
             String url = uploadFile(file, "bloggio");
             Post post = postMapper.postDtoToPost(postSaveDTO);
             post.setPostImage(url);
             postSave = postRepository.save(post);
+            log.info("save post into db");
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
+        }
+
+        return postSave.getPostId().toString();
+    }
+
+    public String createV2(PostSaveDTO postSaveDTO, MultipartFile file) {
+        Post postSave;
+        log.info("try save");
+        try {
+            String url = uploadFile(file, "bloggio");
+            Post post = postMapper.postDtoToPost(postSaveDTO);
+            post.setPostImage(url);
+            postSave = postRepository.save(post);
+            log.info("save post into db");
         } catch (Exception e) {
             log.error(e.getMessage());
             throw e;
@@ -61,13 +79,15 @@ public class PostService {
         return postMapper.postsToPostListDTO(postRepository.findTop4ByOrderByPostLikesDesc());
     }
 
-    public PostListDTO findById(UUID postId) {
-        Optional<Post> post = postRepository.findById(postId);
+    public PostListDTO findById(String postId) {
+        UUID uuid = UUID.fromString(postId);
+        Optional<Post> post = postRepository.findById(uuid);
         return post.map(postMapper::postToPostWithUserDTO).orElse(null);
     }
 
-    public PostSaveDTO update(UUID postId, PostSaveDTO postSaveDTO){
-        Optional<Post> post = postRepository.findById(postId);
+    public PostSaveDTO update(String postId, PostSaveDTO postSaveDTO){
+        UUID uuid = UUID.fromString(postId);
+        Optional<Post> post = postRepository.findById(uuid);
         if (post.isEmpty()){
             log.error("Post With Id "+postId+" Not Found");
             throw new Exception("Post Not Found", HttpStatus.NOT_FOUND);
@@ -112,7 +132,6 @@ public class PostService {
 
     public List<PostByFilters> getAllPostByFilters(int offset, int limit, String category_name, String post_title,
                                                    String post_creation_start, String post_creation_end){
-        //
         String categoryFormat = String.format("%%%s%%", category_name);
         String postFormat = String.format("%%%s%%", post_title);
         return postRepository.getAllPostByFilter(offset, limit, categoryFormat, postFormat, convertToLocalDate(post_creation_start), convertToLocalDate(post_creation_end));
