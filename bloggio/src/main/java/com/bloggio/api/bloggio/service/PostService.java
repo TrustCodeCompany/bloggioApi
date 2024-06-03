@@ -4,6 +4,7 @@ import com.bloggio.api.bloggio.dto.PostListDTO;
 import com.bloggio.api.bloggio.dto.PostSaveDTO;
 import com.bloggio.api.bloggio.exception.Exception;
 import com.bloggio.api.bloggio.mapper.PostMapperImpl;
+import com.bloggio.api.bloggio.payload.post.request.PostLikeUpdateRequest;
 import com.bloggio.api.bloggio.persistence.entity.Post;
 import com.bloggio.api.bloggio.persistence.projection.PostByFilters;
 import com.bloggio.api.bloggio.persistence.repository.PostRepository;
@@ -75,7 +76,7 @@ public class PostService {
         return postMapper.postsToPostListDTO(postRepository.findAll());
     }
 
-    public List<PostListDTO> getTop4Post(){
+    public List<PostListDTO> getTop4Post() {
         return postMapper.postsToPostListDTO(postRepository.findTop4ByOrderByPostLikesDesc());
     }
 
@@ -85,21 +86,21 @@ public class PostService {
         return post.map(postMapper::postToPostWithUserDTO).orElse(null);
     }
 
-    public PostSaveDTO update(String postId, PostSaveDTO postSaveDTO){
+    public PostSaveDTO update(String postId, PostSaveDTO postSaveDTO) {
         UUID uuid = UUID.fromString(postId);
         Optional<Post> post = postRepository.findById(uuid);
-        if (post.isEmpty()){
-            log.error("Post With Id "+postId+" Not Found");
+        if (post.isEmpty()) {
+            log.error("Post With Id " + postId + " Not Found");
             throw new Exception("Post Not Found", HttpStatus.NOT_FOUND);
         }
         Post postUpdate = postMapper.postDtoToPost(postSaveDTO);
         return postMapper.postToPostDTO(postRepository.save(postUpdate));
     }
 
-    public void delete(UUID postId){
+    public void delete(UUID postId) {
         Optional<Post> post = postRepository.findById(postId);
-        if (post.isEmpty()){
-            log.error("Post With Id "+postId+" Not Found");
+        if (post.isEmpty()) {
+            log.error("Post With Id " + postId + " Not Found");
             throw new Exception("Post Not Found", HttpStatus.NOT_FOUND);
         }
         var postDelete = Post.builder()
@@ -114,13 +115,13 @@ public class PostService {
     }
 
     public String uploadFile(MultipartFile file, String folderName) {
-        try{
+        try {
             HashMap<Object, Object> options = new HashMap<>();
             options.put("folder", folderName);
             Map uploadedFile = cloudinary.uploader().upload(file.getBytes(), options);
             String publicId = (String) uploadedFile.get("public_id");
             return cloudinary.url().secure(true).generate(publicId);
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -131,19 +132,42 @@ public class PostService {
     }
 
     public List<PostByFilters> getAllPostByFilters(int offset, int limit, String category_name, String post_title,
-                                                   String post_creation_start, String post_creation_end){
+                                                   String post_creation_start, String post_creation_end) {
         String categoryFormat = String.format("%%%s%%", category_name);
         String postFormat = String.format("%%%s%%", post_title);
         return postRepository.getAllPostByFilter(offset, limit, categoryFormat, postFormat, convertToLocalDate(post_creation_start), convertToLocalDate(post_creation_end));
     }
 
-    private LocalDate convertToLocalDate(String date){
+    private LocalDate convertToLocalDate(String date) {
         final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        if(Objects.nonNull(date) && !date.isEmpty()) {
+        if (Objects.nonNull(date) && !date.isEmpty()) {
             return LocalDate.parse(date, dtf);
         }
 
         return null;
+    }
+
+    public List<PostByFilters> getPostByUser(int offset, int limit, String userId) {
+        UUID uuid = UUID.fromString(userId);
+        var c = postRepository.getPostsByUserId(offset, limit, userId);
+        return c;
+    }
+
+    public void updateLike(String postId, PostLikeUpdateRequest postLikeUpdateRequest) {
+        UUID uuid = UUID.fromString(postId);
+        Optional<Post> post = postRepository.findById(uuid);
+        if (post.isEmpty()) {
+            log.error("Post With Id " + postId + " Not Found");
+            throw new Exception("Post Not Found", HttpStatus.NOT_FOUND);
+        }
+        int likesdb = post.get().getPostLikes() == null ? 0 : post.get().getPostLikes();
+        post.get().setPostLikes(likesdb + 1);
+        PostSaveDTO postUpdate = postMapper.postToPostDTO(post.get());
+
+        PostSaveDTO result = postMapper.postToPostDTO(postRepository.save(postMapper.postDtoToPost(postUpdate)));
+        if (Objects.nonNull(result)) {
+            log.debug("se actualizo correctamente!!");
+        }
     }
 
 }

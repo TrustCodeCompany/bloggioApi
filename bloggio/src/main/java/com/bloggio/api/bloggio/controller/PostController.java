@@ -8,9 +8,12 @@ import com.bloggio.api.bloggio.payload.post.request.CreatePostRequest;
 
 import com.bloggio.api.bloggio.payload.post.request.PostByDateAndPageRequest;
 import com.bloggio.api.bloggio.payload.post.request.PostByFiltersRequest;
+import com.bloggio.api.bloggio.payload.post.request.PostLikeUpdateRequest;
+import com.bloggio.api.bloggio.persistence.projection.PostByFilters;
 import com.bloggio.api.bloggio.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections4.CollectionUtils;
@@ -118,6 +121,26 @@ public class PostController {
             return objectMapper.readValue(source, PostSaveDTO.class);
         }
         return null;
+    }
+
+    @GetMapping("/get-by-user/{id}")
+    public ResponseEntity<PostByFilterResponse> getpostByuserId(@PathVariable("id") String userId,
+                                                                @RequestParam("limit") int limit,
+                                                                @RequestParam("offset") int offset) {
+        List<PostByFilters> response = postService.getPostByUser(offset, limit, userId);
+        return ResponseEntity.status(HttpStatus.OK).body(PostByFilterResponse.builder()
+                .data(response)
+                .limit(limit)
+                .page(offset)
+                .total(CollectionUtils.isNotEmpty(response) ? response.get(0).getFullCount() : 0)
+                .build());
+    }
+
+    @PutMapping("/add-like/{id}")
+    public ResponseEntity<Void> updateById(@PathVariable("id") String id,
+                                                  @RequestBody PostLikeUpdateRequest PostLikeUpdateRequest) {
+        postService.updateLike(id, PostLikeUpdateRequest);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 

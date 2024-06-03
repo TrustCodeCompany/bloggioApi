@@ -33,6 +33,8 @@ public class PostSaveDTO implements Serializable {
 
     private Integer published;
 
+    private Integer postLikes;
+
     @NotNull
     @FKUser
     private UUID userId;
