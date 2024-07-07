@@ -114,6 +114,12 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(postService.update(id, postSaveDTO));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<PostSaveDTO> deleteById(@PathVariable("id") String id) {
+        postService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     @SneakyThrows
     public PostSaveDTO convert(String source) {
         if (Objects.nonNull(source)) {
@@ -137,9 +143,16 @@ public class PostController {
     }
 
     @PutMapping("/add-like/{id}")
-    public ResponseEntity<Void> updateById(@PathVariable("id") String id,
+    public ResponseEntity<Void> addLike(@PathVariable("id") String id,
                                                   @RequestBody PostLikeUpdateRequest PostLikeUpdateRequest) {
-        postService.updateLike(id, PostLikeUpdateRequest);
+        postService.updateLike(id, PostLikeUpdateRequest, "add");
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PutMapping("/minus-like/{id}")
+    public ResponseEntity<Void> minusLike(@PathVariable("id") String id,
+                                           @RequestBody PostLikeUpdateRequest PostLikeUpdateRequest) {
+        postService.updateLike(id, PostLikeUpdateRequest, "minus");
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

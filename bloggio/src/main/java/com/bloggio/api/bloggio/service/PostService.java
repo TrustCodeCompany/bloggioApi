@@ -97,14 +97,15 @@ public class PostService {
         return postMapper.postToPostDTO(postRepository.save(postUpdate));
     }
 
-    public void delete(UUID postId) {
-        Optional<Post> post = postRepository.findById(postId);
+    public void delete(String postId) {
+        UUID uuid = UUID.fromString(postId);
+        Optional<Post> post = postRepository.findById(uuid);
         if (post.isEmpty()) {
             log.error("Post With Id " + postId + " Not Found");
             throw new Exception("Post Not Found", HttpStatus.NOT_FOUND);
         }
         var postDelete = Post.builder()
-                .postId(postId)
+                .postId(uuid)
                 .postContent(post.get().getPostContent())
                 .postDescription(post.get().getPostDescription())
                 .postPriority(post.get().getPostPriority())
@@ -153,7 +154,7 @@ public class PostService {
         return c;
     }
 
-    public void updateLike(String postId, PostLikeUpdateRequest postLikeUpdateRequest) {
+    public void updateLike(String postId, PostLikeUpdateRequest postLikeUpdateRequest, String type) {
         UUID uuid = UUID.fromString(postId);
         Optional<Post> post = postRepository.findById(uuid);
         if (post.isEmpty()) {
@@ -161,7 +162,11 @@ public class PostService {
             throw new Exception("Post Not Found", HttpStatus.NOT_FOUND);
         }
         int likesdb = post.get().getPostLikes() == null ? 0 : post.get().getPostLikes();
-        post.get().setPostLikes(likesdb + 1);
+        if (type.equals("add")) {
+            post.get().setPostLikes(likesdb + 1);
+        } else {
+            post.get().setPostLikes(likesdb - 1);
+        }
         PostSaveDTO postUpdate = postMapper.postToPostDTO(post.get());
 
         PostSaveDTO result = postMapper.postToPostDTO(postRepository.save(postMapper.postDtoToPost(postUpdate)));
