@@ -20,6 +20,7 @@ public interface PostMapper {
 
     List<PostListDTO> postsToPostListDTO(List<Post> postList);
 
+    @Mapping(target = "categoryDesc", source = "post.category.categoryName")
     PostListDTO postToPostWithUserDTO(Post post);
 
 }

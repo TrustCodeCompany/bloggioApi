@@ -1,6 +1,7 @@
 package com.bloggio.api.bloggio.mapper;
 
 
+import com.bloggio.api.bloggio.dto.CommentDTO;
 import com.bloggio.api.bloggio.dto.CommentSaveDTO;
 import com.bloggio.api.bloggio.dto.PostSaveDTO;
 import com.bloggio.api.bloggio.persistence.entity.Comment;
@@ -21,5 +22,8 @@ public interface CommentMapper {
 
     @Mapping(target = "postId", source = "post.postId")
     CommentSaveDTO commentToCommentDTO(Comment comment);
+
+    @Mapping(target = "postId", source = "post.postId")
+    CommentDTO commentEntityToCommentDTO(Comment comment);
 
 }
