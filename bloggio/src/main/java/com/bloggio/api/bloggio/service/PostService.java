@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -73,7 +74,8 @@ public class PostService {
     }
 
     public List<PostListDTO> findAll() {
-        return postMapper.postsToPostListDTO(postRepository.findAll());
+        return postMapper.postsToPostListDTO(postRepository.findAll().stream().filter(post -> post.getPostState() == 1)
+                .collect(Collectors.toList()));
     }
 
     public List<PostListDTO> getTop4Post() {
