@@ -1,5 +1,6 @@
 package com.bloggio.api.bloggio.service;
 
+import com.bloggio.api.bloggio.dto.CommentDTO;
 import com.bloggio.api.bloggio.dto.CommentSaveDTO;
 import com.bloggio.api.bloggio.dto.PostSaveDTO;
 import com.bloggio.api.bloggio.mapper.CommentMapperImpl;
@@ -8,6 +9,10 @@ import com.bloggio.api.bloggio.persistence.entity.Post;
 import com.bloggio.api.bloggio.persistence.repository.CommentRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -35,5 +40,12 @@ public class CommentService {
         }
 
         return commentMapper.commentToCommentDTO(commentSave);
+    }
+
+    public List<CommentDTO> findAll(String postId) {
+
+        return this.commentRepository.findAllByPost(UUID.fromString(postId))
+                .stream().map(this.commentMapper::commentEntityToCommentDTO)
+                .collect(Collectors.toList());
     }
 }

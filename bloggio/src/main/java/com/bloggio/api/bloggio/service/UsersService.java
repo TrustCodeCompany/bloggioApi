@@ -49,4 +49,9 @@ public class UsersService {
                 .filter(item -> item.getUserState() == 0).collect(Collectors.toList()));
     }
 
+    public void activateAccount(String id, int status){
+        log.info("update status account");
+        usersRepository.updateStateUser(id, status);
+    }
+
 }

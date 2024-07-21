@@ -2,9 +2,9 @@ spring:
   application:
     name: "bloggio-api"
   datasource:
-    url: jdbc:postgresql://dpg-cnjtraljm4es73emgceg-a.oregon-postgres.render.com/blog_hoyj
-    username: blog_hoyj_user
-    password: f2HM7uet8NbcOUD2IYQYlganDquS3ZFH
+    url: jdbc:postgresql://dpg-cq51a6dds78s73cqojfg-a.oregon-postgres.render.com/bloggio_dd7x
+    username: bloggio_dd7x_user
+    password: bM0Y3cka8pzZDXRC21rMsyrHXwaIcCiQ
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:
