@@ -28,19 +28,19 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/GetAll")
     public ResponseEntity<List<UsersDTO>> GetAll() {
         return ResponseEntity.status(HttpStatus.OK).body(usersService.getAll());
     }
 
-    @PreAuthorize("hasRole('ROLE_USER') or ('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_USER') or ('ROLE_ADMIN')")
     @GetMapping("/GetAllActivated")
     public ResponseEntity<List<UsersDTO>> GetAllActivated() {
         return ResponseEntity.status(HttpStatus.OK).body(usersService.getAllActivated());
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    //@PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/GetAllDeactivated")
     public ResponseEntity<List<UsersDTO>> GetAllDeactivated() {
         return ResponseEntity.status(HttpStatus.OK).body(usersService.getAllDeactivated());
