@@ -111,6 +111,7 @@ public class PostService {
                 .postContent(post.get().getPostContent())
                 .postDescription(post.get().getPostDescription())
                 .postPriority(post.get().getPostPriority())
+                .postImage(post.get().getPostImage())
                 .postState(0)
                 .user(post.get().getUser())
                 .category(post.get().getCategory()).build();
