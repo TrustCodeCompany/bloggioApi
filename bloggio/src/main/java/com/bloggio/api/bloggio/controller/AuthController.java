@@ -82,47 +82,56 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 
-        if (userRepository.existsByUserEmail(signUpRequest.getUserEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: User Email is already in use!"));
-        }
-
-        if (userRepository.existsByUserNickname(signUpRequest.getUserNickname())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: User Nickname is already taken!"));
-        }
-
         // Create new user's account
         Users user = new Users(signUpRequest.getUserEmail(),
                 signUpRequest.getUserNickname(),
                 encoder.encode(signUpRequest.getUserPassword()));
 
+        // Define Rol Object (Collection)
         Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(TRole.T_ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(TRole.T_ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(TRole.T_ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
+        // Validate and Assign Rol
+        for (String role : strRoles) {
+            switch (role) {
+                case "ROLE_ADMIN":
+                    Role adminRoleCMS = roleRepository.findByName(TRole.ROLE_ADMIN)
+                            .orElse(null);
+                    if (adminRoleCMS == null) {
+                        return ResponseEntity
+                                .badRequest()
+                                .body(new MessageResponse("Error: Role admin is not found."));
+                    }
+                    roles.add(adminRoleCMS);
+                    break;
+                case "ROLE_USER":
+                    Role userRoleCMS = roleRepository.findByName(TRole.ROLE_USER)
+                            .orElse(null);
+                    if (userRoleCMS == null) {
+                        return ResponseEntity
+                                .badRequest()
+                                .body(new MessageResponse("Error: Role user is not found."));
+                    }
+                    roles.add(userRoleCMS);
+                    break;
+                case "":
+                    Role NullRole = roleRepository.findByName(TRole.ROLE_USER)
+                            .orElse(null);
+                    if (NullRole == null) {
+                        return ResponseEntity
+                                .badRequest()
+                                .body(new MessageResponse("Error: Role user is not found."));
+                    }
+                    roles.add(NullRole);
+                    break;
+                default:
+                    return ResponseEntity
+                            .badRequest()
+                            .body(new MessageResponse("Error: Invalid role provided."));
+            }
         }
 
+        // Save Rol and All Data
         user.setRoles(roles);
         userRepository.save(user);
 
@@ -135,3 +144,6 @@ public class AuthController {
     }
 
 }
+
+
+

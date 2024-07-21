@@ -24,22 +24,19 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    /*@PostMapping("/Create")
-    public ResponseEntity<UsersDTO> Create(@Valid @RequestBody UsersDTO usersDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(usersService.create(usersDTO));
-    }*/
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/GetAll")
-    //@PreAuthorize(value = "hasRole('T_ROLE_USER')")
     public ResponseEntity<List<UsersDTO>> GetAll() {
         return ResponseEntity.status(HttpStatus.OK).body(usersService.getAll());
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') or ('ROLE_ADMIN')")
     @GetMapping("/GetAllActivated")
     public ResponseEntity<List<UsersDTO>> GetAllActivated() {
         return ResponseEntity.status(HttpStatus.OK).body(usersService.getAllActivated());
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/GetAllDeactivated")
     public ResponseEntity<List<UsersDTO>> GetAllDeactivated() {
         return ResponseEntity.status(HttpStatus.OK).body(usersService.getAllDeactivated());

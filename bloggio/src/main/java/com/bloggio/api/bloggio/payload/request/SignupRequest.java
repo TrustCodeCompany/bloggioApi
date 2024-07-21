@@ -6,6 +6,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.bloggio.api.bloggio.payload.users.UniqueUserEmail;
+import com.bloggio.api.bloggio.payload.users.UniqueUserNickname;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,18 +18,20 @@ import lombok.NoArgsConstructor;
 public class SignupRequest {
 
     @NotBlank
-    @Size(min = 3, max = 20)
+    @Size(min = 5, max = 100)
+    @UniqueUserNickname
     private String userNickname;
 
     @NotBlank
-    @Size(max = 50)
+    @Size(max = 100)
     @Email
+    @UniqueUserEmail
     private String userEmail;
 
     private Set<String> roles;
 
     @NotBlank
-    @Size(min = 6, max = 40)
+    @Size(min = 5, max = 100)
     private String userPassword;
 
 }

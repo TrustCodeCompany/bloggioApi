@@ -3,6 +3,7 @@ package com.bloggio.api.bloggio.controller;
 import com.bloggio.api.bloggio.dto.PostListDTO;
 import com.bloggio.api.bloggio.dto.PostSaveDTO;
 import com.bloggio.api.bloggio.dto.post.response.PostByFilterResponse;
+import com.bloggio.api.bloggio.dto.post.response.PostByTop4Response;
 import com.bloggio.api.bloggio.dto.post.response.PostResponse;
 import com.bloggio.api.bloggio.payload.post.request.CreatePostRequest;
 
@@ -65,9 +66,19 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(postService.findAll());
     }
 
-    @GetMapping("/GetTop4Post")
+    /*@GetMapping("/GetTop4Post")
     public ResponseEntity<List<PostListDTO>> getTop4Post() {
         return ResponseEntity.status(HttpStatus.OK).body(postService.getTop4Post());
+    }*/
+
+    @GetMapping("/GetTop4Post")
+    public ResponseEntity<PostByTop4Response> GetTop4Post() {
+
+        var response = postService.getTop4Post();
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                PostByTop4Response.builder().data(response).build()
+        );
     }
 
     @PostMapping("/GetAllPostByDateAndPage")

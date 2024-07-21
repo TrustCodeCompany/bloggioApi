@@ -78,8 +78,12 @@ public class PostService {
                 .collect(Collectors.toList()));
     }
 
-    public List<PostListDTO> getTop4Post() {
+    /*public List<PostListDTO> getTop4Post(){
         return postMapper.postsToPostListDTO(postRepository.findTop4ByOrderByPostLikesDesc());
+    }*/
+
+    public List<PostByFilters> getTop4Post(){
+        return postRepository.getTop4PostByLikes();
     }
 
     public PostListDTO findById(String postId) {

@@ -1,6 +1,5 @@
 package com.bloggio.api.bloggio.service;
 
-import com.bloggio.api.bloggio.dto.UsersDTO;
 import com.bloggio.api.bloggio.dto.UsersUpdateDTO;
 import com.bloggio.api.bloggio.exception.Exception;
 import com.bloggio.api.bloggio.mapper.UsersMapperImpl;
