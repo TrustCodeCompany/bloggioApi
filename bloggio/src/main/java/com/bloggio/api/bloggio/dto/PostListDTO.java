@@ -30,4 +30,6 @@ public class PostListDTO {
 
     private Users user;
 
+    private String categoryDesc;
+
 }

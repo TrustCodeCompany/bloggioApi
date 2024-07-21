@@ -51,4 +51,17 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             "LIMIT ?2", nativeQuery = true)
     List<PostByFilters> getAllPostByFilter(int offset, int limit, String category_name, String post_title,
                                            LocalDate post_creation_start, LocalDate post_creation_end);
+
+    @Query(value = "select cast(p.post_id as text) as postId, p.post_content as postContent, p.post_description as postDescription, p.likes,\n" +
+            "p.post_priority as postPriority, p.post_state as postState, p.post_timestamp_create as postCreated,\n" +
+            "p.post_title as postTitle, p.post_image as postImage, p.published, c.category_name as categoryName, cast(u.user_id as text) as userId, u.user_nickname as userNickname,\n" +
+            "count(*) OVER() AS fullCount\n" +
+            "from post p \n" +
+            "join category c on c.category_id = p.category_id \n" +
+            "join users u on u.user_id = p.user_id \n" +
+            "where cast(u.user_id as text) = ?3 \n"+
+            "order by p.likes desc nulls last \n" +
+            "OFFSET (?1-1)*?2 \n" +
+            "LIMIT ?2", nativeQuery = true)
+    List<PostByFilters> getPostsByUserId(int offset, int limit, String userId);
 }
