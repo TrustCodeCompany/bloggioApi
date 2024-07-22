@@ -38,7 +38,7 @@ public class PostController {
     private final PostService postService;
     private final ObjectMapper objectMapper;
 
-    @PostMapping("/Create")
+    /*@PostMapping("/Create")
     public ResponseEntity<PostResponse> Create(CreatePostRequest createPostRequest) {
         log.info("create endpoint");
         log.info("create postv2 - CreatePostRequest {} {}", Objects.nonNull(createPostRequest.getPost()), Objects.nonNull(createPostRequest.getFile().getOriginalFilename()));
@@ -47,7 +47,7 @@ public class PostController {
                 .message("Post creado correctamente")
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+    }*/
 
     @PostMapping(value = "/Create-v2", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostResponse> CreateV2(

@@ -1,16 +1,18 @@
 package com.bloggio.api.bloggio.controller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import com.bloggio.api.bloggio.dto.UsersUpdateDTO;
+import com.bloggio.api.bloggio.dto.user.response.ProfileResponse;
 import com.bloggio.api.bloggio.service.AuthService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,10 +32,12 @@ import com.bloggio.api.bloggio.persistence.repository.RoleRepository;
 import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
 import com.bloggio.api.bloggio.security.jwt.JwtUtils;
 import com.bloggio.api.bloggio.security.services.UserDetailsImpl;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/auth")
+@Log4j2
 public class AuthController {
 
     @Autowired
@@ -50,6 +54,10 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
 
     private final AuthService authService;
 
@@ -138,9 +146,13 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    @PutMapping("/UpdateById")
-    public void UpdateById(@RequestParam UUID userId, @Valid @RequestBody UsersUpdateDTO usersUpdateDTO) {
-         authService.updateById(userId, usersUpdateDTO);
+    @PostMapping(value = "/update-profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProfileResponse> UpdateById(
+            @RequestPart("user") UsersUpdateDTO usersUpdateDTO,
+            @RequestPart("file") MultipartFile file) {
+        authService.updateById(usersUpdateDTO, file);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(ProfileResponse.builder().postId(UUID.randomUUID().toString()).message("ok").build());
     }
 
 }
