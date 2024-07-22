@@ -1,9 +1,12 @@
 package com.bloggio.api.bloggio.persistence.repository;
 
+import com.bloggio.api.bloggio.persistence.entity.Category;
 import com.bloggio.api.bloggio.persistence.entity.Post;
+import com.bloggio.api.bloggio.persistence.entity.Users;
 import com.bloggio.api.bloggio.persistence.projection.PostByFilters;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
