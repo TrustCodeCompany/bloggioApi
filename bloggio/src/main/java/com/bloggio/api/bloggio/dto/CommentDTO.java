@@ -32,4 +32,6 @@ public class CommentDTO implements Serializable {
 
     private UUID postId;
 
+    private UsersDTO usersDTO;
+
 }

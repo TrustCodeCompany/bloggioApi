@@ -45,4 +45,6 @@ public class Comment {
     @JoinColumn(name = "postId", nullable = false)
     private Post post;
 
+    private UUID userId;
+
 }

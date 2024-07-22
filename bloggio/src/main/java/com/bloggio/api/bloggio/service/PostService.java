@@ -5,7 +5,9 @@ import com.bloggio.api.bloggio.dto.PostSaveDTO;
 import com.bloggio.api.bloggio.exception.Exception;
 import com.bloggio.api.bloggio.mapper.PostMapperImpl;
 import com.bloggio.api.bloggio.payload.post.request.PostLikeUpdateRequest;
+import com.bloggio.api.bloggio.persistence.entity.Category;
 import com.bloggio.api.bloggio.persistence.entity.Post;
+import com.bloggio.api.bloggio.persistence.entity.Users;
 import com.bloggio.api.bloggio.persistence.projection.PostByFilters;
 import com.bloggio.api.bloggio.persistence.repository.PostRepository;
 import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -82,7 +85,7 @@ public class PostService {
         return postMapper.postsToPostListDTO(postRepository.findTop4ByOrderByPostLikesDesc());
     }*/
 
-    public List<PostByFilters> getTop4Post(){
+    public List<PostByFilters> getTop4Post() {
         return postRepository.getTop4PostByLikes();
     }
 
@@ -157,8 +160,7 @@ public class PostService {
 
     public List<PostByFilters> getPostByUser(int offset, int limit, String userId) {
         UUID uuid = UUID.fromString(userId);
-        var c = postRepository.getPostsByUserId(offset, limit, userId);
-        return c;
+        return postRepository.getPostsByUserId(offset, limit, userId);
     }
 
     public void updateLike(String postId, PostLikeUpdateRequest postLikeUpdateRequest, String type) {
@@ -180,6 +182,14 @@ public class PostService {
         if (Objects.nonNull(result)) {
             log.debug("se actualizo correctamente!!");
         }
+    }
+
+    public List<PostByFilters> getRecommendedPost(String user, String categoryName) {
+        List<PostByFilters> postsByUserList = postRepository.getPostsByUserId(1, 4, user);
+        if (postsByUserList.size() == BigDecimal.ONE.intValue()) {
+            return postRepository.getAllPostByFilter(1, 4, categoryName, null, null, null);
+        }
+        return postsByUserList;
     }
 
 }

@@ -167,5 +167,11 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @GetMapping("/recommended-post")
+    public ResponseEntity<List<PostByFilters>> GetRecommendedPost(@RequestParam("user-id") String user,
+                                                                @RequestParam("category-name") String category) {
+        var response = postService.getRecommendedPost(user, category);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 
 }
