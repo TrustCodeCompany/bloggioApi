@@ -36,4 +36,6 @@ public class CommentSaveDTO implements Serializable {
     @FKPost
     private UUID postId;
 
+    private UUID userId;
+
 }
