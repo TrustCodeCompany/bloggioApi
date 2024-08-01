@@ -13,10 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Log4j2
@@ -36,12 +33,18 @@ public class AuthService {
 
     public void updateById(UsersUpdateDTO usersUpdateDTO, MultipartFile file) {
         Optional<Users> findUsersById = usersRepository.findById(UUID.fromString(usersUpdateDTO.getUserId()));
+        String url;
         if (findUsersById.isEmpty()) {
             log.error("Error");
             throw new Exception("User Not Found", HttpStatus.NOT_FOUND);
         }
-        String url = uploadFile(file, "bloggio_users");
+
         Users updateUsers = findUsersById.get();
+        url = updateUsers.getUserPhoto();
+        if (Objects.nonNull(file) && !file.isEmpty() && file.getSize() > 0) {
+            url = uploadFile(file, "bloggio_users");
+        }
+
         updateUsers.setUserNickname(usersUpdateDTO.getUserNickname());
         updateUsers.setUserPhoto(url);
         updateUsers.setUserShortBio(usersUpdateDTO.getUserShortBio());
