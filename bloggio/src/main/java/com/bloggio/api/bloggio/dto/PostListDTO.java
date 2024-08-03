@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -31,5 +32,7 @@ public class PostListDTO {
     private Users user;
 
     private String categoryDesc;
+
+    private LocalDate postCreated;
 
 }

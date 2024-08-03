@@ -21,6 +21,7 @@ public interface PostMapper {
     List<PostListDTO> postsToPostListDTO(List<Post> postList);
 
     @Mapping(target = "categoryDesc", source = "post.category.categoryName")
+    @Mapping(target = "postCreated", source = "postTimestampCreate")
     PostListDTO postToPostWithUserDTO(Post post);
 
 }
