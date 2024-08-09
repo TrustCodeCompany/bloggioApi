@@ -5,7 +5,6 @@ import com.bloggio.api.bloggio.dto.PostSaveDTO;
 import com.bloggio.api.bloggio.dto.post.response.PostByFilterResponse;
 import com.bloggio.api.bloggio.dto.post.response.PostByTop4Response;
 import com.bloggio.api.bloggio.dto.post.response.PostResponse;
-import com.bloggio.api.bloggio.payload.post.request.CreatePostRequest;
 
 import com.bloggio.api.bloggio.payload.post.request.PostByDateAndPageRequest;
 import com.bloggio.api.bloggio.payload.post.request.PostByFiltersRequest;
@@ -14,7 +13,6 @@ import com.bloggio.api.bloggio.persistence.projection.PostByFilters;
 import com.bloggio.api.bloggio.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections4.CollectionUtils;

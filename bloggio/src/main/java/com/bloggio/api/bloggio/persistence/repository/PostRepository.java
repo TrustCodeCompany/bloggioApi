@@ -1,12 +1,9 @@
 package com.bloggio.api.bloggio.persistence.repository;
 
-import com.bloggio.api.bloggio.persistence.entity.Category;
 import com.bloggio.api.bloggio.persistence.entity.Post;
-import com.bloggio.api.bloggio.persistence.entity.Users;
 import com.bloggio.api.bloggio.persistence.projection.PostByFilters;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -62,7 +59,7 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             "from post p \n" +
             "join category c on c.category_id = p.category_id \n" +
             "join users u on u.user_id = p.user_id \n" +
-            "where cast(u.user_id as text) = ?3 \n"+
+            "where cast(u.user_id as text) = ?3 and p.post_state > 0\n"+
             "order by p.likes desc nulls last \n" +
             "OFFSET (?1-1)*?2 \n" +
             "LIMIT ?2", nativeQuery = true)
