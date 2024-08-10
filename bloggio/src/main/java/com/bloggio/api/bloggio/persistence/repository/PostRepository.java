@@ -21,6 +21,7 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             "from post p \n" +
             "join category c on c.category_id = p.category_id \n" +
             "join users u on u.user_id = p.user_id \n" +
+            "where p.post_state > 0\n" +
             "order by p.likes desc \n" + "limit 4", nativeQuery = true)
     List<PostByFilters> getTop4PostByLikes();
 
@@ -31,6 +32,7 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             "from post p \n" +
             "join category c on c.category_id = p.category_id \n" +
             "join users u on u.user_id = p.user_id \n" +
+            "where p.post_state > 0 \n" +
             "order by p.post_timestamp_create desc \n" +
             "OFFSET (?1-1)*?2 \n" +
             "LIMIT ?2", nativeQuery = true)
