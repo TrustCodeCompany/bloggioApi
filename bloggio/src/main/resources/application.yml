@@ -39,5 +39,8 @@ cloudinary:
   api_secret: "nzq94PvMyd1AGVyVSE36RATj69w"
 
 sendgrid:
-  api-key: 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
+  api-key: ${SENDGRID_API_KEY}
+
+#sendgrid:
+  #api-key: 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
 
