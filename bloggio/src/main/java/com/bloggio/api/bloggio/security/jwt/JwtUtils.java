@@ -17,7 +17,7 @@ public class JwtUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${bloggio.app.jwtSecret}")
+    @Value("bloggioSecretKey")
     private String jwtSecret;
 
     @Value("${bloggio.app.jwtExpirationMs}")

@@ -1,5 +1,6 @@
 package com.bloggio.api.bloggio.controller;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -58,7 +59,6 @@ public class AuthController {
     @Autowired
     ObjectMapper objectMapper;
 
-
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
@@ -98,6 +98,7 @@ public class AuthController {
         // Define Rol Object (Collection)
         Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
+
 
         // Validate and Assign Rol
         for (String role : strRoles) {
@@ -151,8 +152,23 @@ public class AuthController {
             @RequestPart("user") UsersUpdateDTO usersUpdateDTO,
             @RequestPart("file") MultipartFile file) {
         authService.updateById(usersUpdateDTO, file);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(ProfileResponse.builder().postId(UUID.randomUUID().toString()).message("ok").build());
+    }
+
+    @PostMapping("/reset-request")
+    public ResponseEntity<?> requestPasswordReset(@RequestParam String email) {
+        try {
+            authService.requestPasswordReset(email);
+            return ResponseEntity.ok("Password reset link sent");
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Error sending email");
+        }
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
+        authService.resetPassword(token, newPassword);
+        return ResponseEntity.ok("Password has been reset");
     }
 
 }
