@@ -2,9 +2,12 @@ spring:
   application:
     name: "bloggio-api"
   datasource:
-    url: jdbc:postgresql://dpg-cq51a6dds78s73cqojfg-a.oregon-postgres.render.com/bloggio_dd7x
-    username: bloggio_dd7x_user
-    password: bM0Y3cka8pzZDXRC21rMsyrHXwaIcCiQ
+    url: jdbc:postgresql://localhost:5432/blog
+    #url: jdbc:postgresql://dpg-cqp4r0dds78s73e4ecs0-a.oregon-postgres.render.com/bloggio_db
+    username: postgres
+    #username: bloggio_db_user
+    password: postgres
+    #password: EtYThWqr3ifUMWjjsh6pYlS7TWT63s7i
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:
@@ -21,13 +24,21 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
 server:
   port: 8080
+
 bloggio:
   app:
     jwtSecret: "bloggioSecretKey"
     jwtExpirationMs: 86400000
+
 cloudinary:
   cloud_name: "dbxivsisb"
   api_key: "559448955182318"
   api_secret: "nzq94PvMyd1AGVyVSE36RATj69w"
+
+sendgrid:
+  api-key: ${SENDGRID_API_KEY}
+
+
