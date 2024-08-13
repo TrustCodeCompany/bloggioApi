@@ -7,13 +7,16 @@ import com.bloggio.api.bloggio.mapper.PostMapperImpl;
 import com.bloggio.api.bloggio.payload.post.request.PostLikeUpdateRequest;
 import com.bloggio.api.bloggio.persistence.entity.Post;
 import com.bloggio.api.bloggio.persistence.projection.PostByFilters;
+import com.bloggio.api.bloggio.persistence.repository.CommentRepository;
 import com.bloggio.api.bloggio.persistence.repository.PostRepository;
 import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
 import com.cloudinary.Cloudinary;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -31,6 +34,8 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
+
+    private final CommentRepository commentRepository;
 
     private final UsersRepository usersRepository;
 
@@ -111,16 +116,8 @@ public class PostService {
             log.error("Post With Id " + postId + " Not Found");
             throw new Exception("Post Not Found", HttpStatus.NOT_FOUND);
         }
-        var postDelete = Post.builder()
-                .postId(uuid)
-                .postContent(post.get().getPostContent())
-                .postDescription(post.get().getPostDescription())
-                .postPriority(post.get().getPostPriority())
-                .postImage(post.get().getPostImage())
-                .postState(0)
-                .user(post.get().getUser())
-                .category(post.get().getCategory()).build();
-        postRepository.save(postDelete);
+        commentRepository.deleteAllCommentsByPostId(post.get().getPostId());
+        postRepository.deleteById(post.get().getPostId());
     }
 
     public String uploadFile(MultipartFile file, String folderName) {
