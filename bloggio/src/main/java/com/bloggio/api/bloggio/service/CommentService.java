@@ -3,6 +3,7 @@ package com.bloggio.api.bloggio.service;
 import com.bloggio.api.bloggio.dto.CommentDTO;
 import com.bloggio.api.bloggio.dto.CommentSaveDTO;
 import com.bloggio.api.bloggio.dto.PostSaveDTO;
+import com.bloggio.api.bloggio.exception.Exception;
 import com.bloggio.api.bloggio.mapper.CommentMapperImpl;
 import com.bloggio.api.bloggio.mapper.UsersMapperImpl;
 import com.bloggio.api.bloggio.persistence.entity.Comment;
@@ -10,10 +11,12 @@ import com.bloggio.api.bloggio.persistence.entity.Post;
 import com.bloggio.api.bloggio.persistence.repository.CommentRepository;
 import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -75,5 +78,33 @@ public class CommentService {
             return commentDTO;
         }).collect(Collectors.toList());
 
+    }
+
+    public CommentSaveDTO edit(String commentId, CommentSaveDTO commentSaveDTO) {
+        Comment commentSave = null;
+
+        try {
+            UUID uuid = UUID.fromString(commentId);
+            Optional<Comment> comment = this.commentRepository.findById(uuid);
+            if (comment.isPresent()) {
+                comment.get().setCommentContent(commentSaveDTO.getCommentContent());
+                commentSave = commentRepository.save(comment.get());
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
+        }
+
+        return commentMapper.commentToCommentDTO(commentSave);
+    }
+
+    public void delete(String commentId) {
+        UUID uuid = UUID.fromString(commentId);
+        Optional<Comment> comment = commentRepository.findById(uuid);
+        if (comment.isEmpty()) {
+            log.error("Comment With Id " + commentId + " Not Found");
+            throw new Exception("Comment Not Found", HttpStatus.NOT_FOUND);
+        }
+        commentRepository.deleteById(comment.get().getCommentId());
     }
 }

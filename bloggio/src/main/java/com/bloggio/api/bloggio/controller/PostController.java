@@ -117,10 +117,11 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(post);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PostSaveDTO> updateById(@PathVariable("id") String id,
-                                                  @Valid @RequestBody PostSaveDTO postSaveDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(postService.update(id, postSaveDTO));
+    @PostMapping(value = "/edit-post", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateById(@RequestPart("post") PostSaveDTO postSaveDTO,
+                                                  @RequestPart("file") MultipartFile file) {
+        postService.update(postSaveDTO, file);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{id}")
