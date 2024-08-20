@@ -3,10 +3,16 @@ package com.bloggio.api.bloggio.persistence.repository;
 import com.bloggio.api.bloggio.persistence.entity.Post;
 import com.bloggio.api.bloggio.persistence.projection.PostByFilters;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,4 +72,14 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             "OFFSET (?1-1)*?2 \n" +
             "LIMIT ?2", nativeQuery = true)
     List<PostByFilters> getPostsByUserId(int offset, int limit, String userId);
+
+    @Modifying
+    @Query("update Post p set p.postContent =:postContent, p.postDescription =:postDescription, p.postImage =:postImage, \n" +
+            "p.postLikes =:likes, p.postPriority =:priority, p.postState =:state, p.postTimestampUpdate =:timestampUpdate, p.postTitle =:title, \n" +
+            "p.published =:published \n" +
+            "where p.postId =:postId")
+    void updatePost(@Param("postId") UUID postId, @Param("postContent") String postContent,
+                    @Param("postDescription") String postDescription, @Param("postImage") String postImage, @Param("likes") Integer likes,
+                    @Param("priority") Integer priority, @Param("state") Integer state,
+                    @Param("timestampUpdate") Date timestampUpdate, @Param("title") String title, @Param("published") Integer published);
 }

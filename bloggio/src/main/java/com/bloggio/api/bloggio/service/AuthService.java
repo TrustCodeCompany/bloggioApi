@@ -117,4 +117,24 @@ public class AuthService {
         log.info("Uses Token Successful");
     }
 
+    /*public void requestAccountEnabledOrDisabled(String email) throws IOException {
+
+        Optional<Users> users = usersRepository.findByUserEmail(email);
+
+        if (users.isEmpty()) {
+            log.error("Error");
+            throw new Exception("User Email Not Found", HttpStatus.NOT_FOUND);
+        }
+
+        Users requestPasswordUsers = users.get();
+
+        String token = UUID.randomUUID().toString();
+        PasswordResetToken passwordResetToken = new PasswordResetToken(token, requestPasswordUsers);
+        passwordResetTokenRepository.save(passwordResetToken);
+
+        String resetLink = "http://bloggio-changePassword.onrender/reset-password?token=" + token;
+        emailService.sendEmail(requestPasswordUsers.getUserEmail(), "Reset Your Password", "Click the following link to reset your password: " + resetLink);
+
+    }*/
+
 }

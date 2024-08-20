@@ -171,6 +171,25 @@ public class AuthController {
         return ResponseEntity.ok("Password has been reset");
     }
 
+    /*@PostMapping("/security-request-mail")
+    public ResponseEntity<?> securityRequestMail(@RequestParam String email) {
+        authService.resetPassword(token, newPassword);
+        return ResponseEntity.ok("Password has been reset");
+    }
+
+
+    @PostMapping("/disabled-account")
+    public ResponseEntity<?> disabledAccount(@RequestParam String token, @RequestParam String newPassword) {
+        authService.resetPassword(token, newPassword);
+        return ResponseEntity.ok("Password has been reset");
+    }
+
+    @PostMapping("/enabled-account")
+    public ResponseEntity<?> enabledAccount(@RequestParam String token, @RequestParam String newPassword) {
+        authService.resetPassword(token, newPassword);
+        return ResponseEntity.ok("Password has been reset");
+    }*/
+
 }
 
 

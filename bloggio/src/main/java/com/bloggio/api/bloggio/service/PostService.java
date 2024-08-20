@@ -22,7 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -98,15 +100,28 @@ public class PostService {
         return post.map(postMapper::postToPostWithUserDTO).orElse(null);
     }
 
-    public PostSaveDTO update(String postId, PostSaveDTO postSaveDTO) {
-        UUID uuid = UUID.fromString(postId);
-        Optional<Post> post = postRepository.findById(uuid);
-        if (post.isEmpty()) {
-            log.error("Post With Id " + postId + " Not Found");
-            throw new Exception("Post Not Found", HttpStatus.NOT_FOUND);
+    @Transactional
+    public void update(PostSaveDTO postSaveDTO, MultipartFile file) {
+        Post postUpdate;
+        log.info("try update");
+        try {
+            UUID uuid = postSaveDTO.getPostId();
+            Optional<Post> post = postRepository.findById(uuid);
+            if (post.isEmpty()) {
+                log.error("Post With Id " + uuid + " Not Found");
+                throw new Exception("Post Not Found", HttpStatus.NOT_FOUND);
+            }
+            String url = uploadFile(file, "bloggio");
+            postUpdate = postMapper.postDtoToPost(postSaveDTO);
+            postUpdate.setPostImage(url);
+        } catch (java.lang.Exception e) {
+            log.error(e.getMessage());
+            throw e;
         }
-        Post postUpdate = postMapper.postDtoToPost(postSaveDTO);
-        return postMapper.postToPostDTO(postRepository.save(postUpdate));
+
+        postRepository.updatePost(postUpdate.getPostId(), postUpdate.getPostContent(), postUpdate.getPostDescription(), postUpdate.getPostImage(),
+                postUpdate.getPostLikes(), postUpdate.getPostPriority(), postUpdate.getPostState(), new Date(),
+                postUpdate.getPostTitle(), postUpdate.getPublished());
     }
 
     public void delete(String postId) {
