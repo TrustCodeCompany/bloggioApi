@@ -22,4 +22,6 @@ public class UsersUpdateDTO  implements Serializable {
 
     private String userShortBio;
 
+    private Boolean imageOldSelectedName;
+
 }

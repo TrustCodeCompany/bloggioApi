@@ -54,7 +54,7 @@ public class AuthService {
 
         Users updateUsers = findUsersById.get();
         url = updateUsers.getUserPhoto();
-        if (Objects.nonNull(file) && !file.isEmpty() && file.getSize() > 0) {
+        if (!usersUpdateDTO.getImageOldSelectedName()){
             url = uploadFile(file, "bloggio_users");
         }
 
