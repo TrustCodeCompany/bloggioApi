@@ -84,7 +84,7 @@ public class AuthController {
 
         return ResponseEntity
                 .ok(new JwtResponse(jwt, "Bearer", userDetails.getUserId(), userDetails.getUserNickname(),
-                        userDetails.getUserEmail(), userDetails.getUserPhoto(), userDetails.getUserShortBio(), roles));
+                        userDetails.getUserEmail(), userDetails.getUserPhoto(), userDetails.getUserShortBio(), roles,userDetails.isReactiveAccount()));
     }
 
     @PostMapping("/signup")
@@ -171,24 +171,12 @@ public class AuthController {
         return ResponseEntity.ok("Password has been reset");
     }
 
-    /*@PostMapping("/security-request-mail")
-    public ResponseEntity<?> securityRequestMail(@RequestParam String email) {
-        authService.resetPassword(token, newPassword);
-        return ResponseEntity.ok("Password has been reset");
+    @GetMapping("/disabled-account")
+    public ResponseEntity<?> disabledAccount(@RequestParam String uuid) {
+        authService.disabledAccount(uuid);
+        return ResponseEntity.status(HttpStatus.CREATED).body("cuenta desactivada satisfactoriamente");
     }
 
-
-    @PostMapping("/disabled-account")
-    public ResponseEntity<?> disabledAccount(@RequestParam String token, @RequestParam String newPassword) {
-        authService.resetPassword(token, newPassword);
-        return ResponseEntity.ok("Password has been reset");
-    }
-
-    @PostMapping("/enabled-account")
-    public ResponseEntity<?> enabledAccount(@RequestParam String token, @RequestParam String newPassword) {
-        authService.resetPassword(token, newPassword);
-        return ResponseEntity.ok("Password has been reset");
-    }*/
 
 }
 

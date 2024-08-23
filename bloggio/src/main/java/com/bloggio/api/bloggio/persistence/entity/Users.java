@@ -68,6 +68,8 @@ public class Users {
     @UpdateTimestamp
     private Timestamp userFUpdate;
 
+    private transient boolean reactiveAccount;
+
     public Users(String userEmail, String userNickname, String userPassword) {
         this.userEmail = userEmail;
         this.userNickname = userNickname;

@@ -42,12 +42,12 @@ public class UsersController {
         return ResponseEntity.status(HttpStatus.OK).body(usersService.getAllDeactivated());
     }
 
-    @PutMapping("/update-account/{id}")
+    /*@PutMapping("/update-account/{id}")
     public ResponseEntity<UsersDTO> activateAccount(
             @PathVariable("id") String id,
             @RequestParam("status") int status){
         usersService.activateAccount(id, status);
         return ResponseEntity.status(HttpStatus.OK).build();
-    }
+    }*/
 
 }

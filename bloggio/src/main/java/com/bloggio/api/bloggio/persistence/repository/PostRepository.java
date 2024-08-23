@@ -82,4 +82,8 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
                     @Param("postDescription") String postDescription, @Param("postImage") String postImage, @Param("likes") Integer likes,
                     @Param("priority") Integer priority, @Param("state") Integer state,
                     @Param("timestampUpdate") Date timestampUpdate, @Param("title") String title, @Param("published") Integer published);
+
+    @Modifying
+    @Query("update Post p set p.postState =:state where p.user.userId =:userId")
+    void disabledPostByUserId(@Param("userId") UUID userId, @Param("state") Integer state);
 }
