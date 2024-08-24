@@ -23,6 +23,6 @@ public interface UsersRepository extends JpaRepository<Users, UUID> {
 
     @Modifying
     @Query("update Users u set u.userState =:state where u.userId =:uuid")
-    void updateStateUser(String uuid, int state);
+    void updateStateUser(UUID uuid, int state);
 
 }

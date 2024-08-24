@@ -20,5 +20,6 @@ public class JwtResponse {
     private String userPhoto;
     private String userShortBio;
     private List<String> roles;
+    private boolean reactiveAccount;
 
 }

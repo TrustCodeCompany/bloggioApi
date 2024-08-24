@@ -6,6 +6,7 @@ import com.bloggio.api.bloggio.mapper.UsersMapperImpl;
 import com.bloggio.api.bloggio.persistence.entity.PasswordResetToken;
 import com.bloggio.api.bloggio.persistence.entity.Users;
 import com.bloggio.api.bloggio.persistence.repository.PasswordResetTokenRepository;
+import com.bloggio.api.bloggio.persistence.repository.PostRepository;
 import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
 import com.cloudinary.Cloudinary;
 import lombok.extern.log4j.Log4j2;
@@ -13,10 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -26,6 +29,8 @@ public class AuthService {
     private final UsersRepository usersRepository;
 
     private UsersMapperImpl usersMapperImpl;
+
+    private final PostRepository postRepository;
 
     @Resource
     private Cloudinary cloudinary;
@@ -37,9 +42,10 @@ public class AuthService {
     @Autowired
     PasswordEncoder encoder;
 
-    public AuthService (UsersRepository usersRepository , UsersMapperImpl usersMapperImpl,PasswordResetTokenRepository passwordResetTokenRepository,EmailService emailService) {
+    public AuthService (UsersRepository usersRepository , UsersMapperImpl usersMapperImpl, PostRepository postRepository, PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService) {
         this.usersRepository = usersRepository;
         this.usersMapperImpl = usersMapperImpl;
+        this.postRepository = postRepository;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.emailService = emailService;
     }
@@ -117,24 +123,16 @@ public class AuthService {
         log.info("Uses Token Successful");
     }
 
-    /*public void requestAccountEnabledOrDisabled(String email) throws IOException {
-
-        Optional<Users> users = usersRepository.findByUserEmail(email);
-
-        if (users.isEmpty()) {
+    @Transactional
+    public void disabledAccount(String uuid){
+        Optional<Users> findUsersById = usersRepository.findById(UUID.fromString(uuid));
+        if (findUsersById.isEmpty()) {
             log.error("Error");
-            throw new Exception("User Email Not Found", HttpStatus.NOT_FOUND);
+            throw new Exception("User Not Found", HttpStatus.NOT_FOUND);
         }
 
-        Users requestPasswordUsers = users.get();
-
-        String token = UUID.randomUUID().toString();
-        PasswordResetToken passwordResetToken = new PasswordResetToken(token, requestPasswordUsers);
-        passwordResetTokenRepository.save(passwordResetToken);
-
-        String resetLink = "http://bloggio-changePassword.onrender/reset-password?token=" + token;
-        emailService.sendEmail(requestPasswordUsers.getUserEmail(), "Reset Your Password", "Click the following link to reset your password: " + resetLink);
-
-    }*/
+        this.postRepository.disabledPostByUserId(findUsersById.get().getUserId(), BigDecimal.ZERO.intValue());
+        this.usersRepository.updateStateUser(findUsersById.get().getUserId(), BigDecimal.ZERO.intValue());
+    }
 
 }

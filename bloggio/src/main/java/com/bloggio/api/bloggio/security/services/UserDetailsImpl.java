@@ -37,6 +37,8 @@ public class UserDetailsImpl implements UserDetails {
 
     private String userShortBio;
 
+    private boolean reactiveAccount;
+
     private Collection<? extends GrantedAuthority> authorities;
 
     public static UserDetailsImpl build(Users users) {
@@ -52,6 +54,7 @@ public class UserDetailsImpl implements UserDetails {
                 users.getUserPassword(),
                 users.getUserPhoto(),
                 users.getUserShortBio(),
+                users.isReactiveAccount(),
                 authorities);
     }
 
@@ -74,6 +77,8 @@ public class UserDetailsImpl implements UserDetails {
     public String getUserPhoto() { return userPhoto; }
 
     public String getUserShortBio() { return userShortBio; }
+
+    public boolean isReactiveAccount() { return reactiveAccount; }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
@@ -119,4 +124,7 @@ public class UserDetailsImpl implements UserDetails {
         return Objects.equals(UserId, user.UserId);
     }
 
+    /*public static void setReactiveAccount(boolean reactiveAccount) {
+        this.reactiveAccount = reactiveAccount;
+    }*/
 }
