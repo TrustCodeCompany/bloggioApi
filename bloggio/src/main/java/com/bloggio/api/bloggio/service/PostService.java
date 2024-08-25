@@ -172,8 +172,11 @@ public class PostService {
     }
 
     public List<PostByFilters> getPostByUser(int offset, int limit, String userId) {
-        UUID uuid = UUID.fromString(userId);
         return postRepository.getPostsByUserId(offset, limit, userId);
+    }
+
+    public List<PostByFilters> getPostsDraftByUser(int offset, int limit, String userId) {
+        return postRepository.getPostsDraftByUserId(offset, limit, userId);
     }
 
     public void updateLike(String postId, PostLikeUpdateRequest postLikeUpdateRequest, String type) {
