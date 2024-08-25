@@ -111,7 +111,10 @@ public class PostService {
                 log.error("Post With Id " + uuid + " Not Found");
                 throw new Exception("Post Not Found", HttpStatus.NOT_FOUND);
             }
-            String url = uploadFile(file, "bloggio");
+            String url = post.get().getPostImage();
+            if (postSaveDTO.isHasImageForUpload()){
+                url = uploadFile(file, "bloggio");
+            }
             postUpdate = postMapper.postDtoToPost(postSaveDTO);
             postUpdate.setPostImage(url);
         } catch (java.lang.Exception e) {

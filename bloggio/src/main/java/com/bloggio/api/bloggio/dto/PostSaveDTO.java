@@ -2,6 +2,7 @@ package com.bloggio.api.bloggio.dto;
 
 import com.bloggio.api.bloggio.payload.post.FKCategory;
 import com.bloggio.api.bloggio.payload.post.FKUser;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,5 +43,8 @@ public class PostSaveDTO implements Serializable {
     @NotNull
     @FKCategory
     private UUID categoryId;
+
+    @JsonProperty("hasImageForUpload")
+    private boolean hasImageForUpload;
 
 }
