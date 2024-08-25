@@ -140,7 +140,7 @@ public class PostController {
     }
 
     @GetMapping("/get-by-user/{id}")
-    public ResponseEntity<PostByFilterResponse> getpostByuserId(@PathVariable("id") String userId,
+    public ResponseEntity<PostByFilterResponse> getPostPublishedByUserId(@PathVariable("id") String userId,
                                                                 @RequestParam("limit") int limit,
                                                                 @RequestParam("offset") int offset) {
         List<PostByFilters> response = postService.getPostByUser(offset, limit, userId);
@@ -171,6 +171,19 @@ public class PostController {
                                                                 @RequestParam("category-name") String category) {
         var response = postService.getRecommendedPost(user, category);
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/get-posts-draft-by-user/{id}")
+    public ResponseEntity<PostByFilterResponse> getPostSaveByUserId(@PathVariable("id") String userId,
+                                                                @RequestParam("limit") int limit,
+                                                                @RequestParam("offset") int offset) {
+        List<PostByFilters> response = postService.getPostsDraftByUser(offset, limit, userId);
+        return ResponseEntity.status(HttpStatus.OK).body(PostByFilterResponse.builder()
+                .data(response)
+                .limit(limit)
+                .page(offset)
+                .total(CollectionUtils.isNotEmpty(response) ? response.get(0).getFullCount() : 0)
+                .build());
     }
 
 }
