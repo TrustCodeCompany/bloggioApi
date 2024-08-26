@@ -149,7 +149,7 @@ public class AuthController {
 
     @PostMapping(value = "/update-profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProfileResponse> UpdateById(
-            @RequestPart("user") UsersUpdateDTO usersUpdateDTO,
+            @Valid @RequestPart("user") UsersUpdateDTO usersUpdateDTO,
             @RequestPart("file") MultipartFile file) {
         authService.updateById(usersUpdateDTO, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(ProfileResponse.builder().postId(UUID.randomUUID().toString()).message("ok").build());
@@ -176,7 +176,6 @@ public class AuthController {
         authService.disabledAccount(uuid);
         return ResponseEntity.status(HttpStatus.CREATED).body("cuenta desactivada satisfactoriamente");
     }
-
 
 }
 

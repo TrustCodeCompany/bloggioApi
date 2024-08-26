@@ -105,7 +105,7 @@ public class AuthService {
         passwordResetTokenRepository.save(passwordResetToken);
 
         String resetLink = baseUrl + "/reset-password?token=" + token;
-        emailService.sendEmail(requestPasswordUsers.getUserEmail(), "Reset Your Password", "Click the following link to reset your password: " + resetLink);
+        emailService.sendEmail(requestPasswordUsers.getUserEmail(), "Restablecer Contraseña - Bloggio", "Haga click en el siguiente enlace para restablecer su contraseña:" + resetLink);
     }
 
     public void resetPassword(String token, String newPassword) {
