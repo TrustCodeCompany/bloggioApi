@@ -11,6 +11,7 @@ import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
 import com.cloudinary.Cloudinary;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,9 @@ public class AuthService {
 
     @Autowired
     PasswordEncoder encoder;
+
+    @Value("${bloggio.app.base-url}")
+    private String baseUrl;
 
     public AuthService (UsersRepository usersRepository , UsersMapperImpl usersMapperImpl, PostRepository postRepository, PasswordResetTokenRepository passwordResetTokenRepository, EmailService emailService) {
         this.usersRepository = usersRepository;
@@ -100,9 +104,8 @@ public class AuthService {
         PasswordResetToken passwordResetToken = new PasswordResetToken(token, requestPasswordUsers);
         passwordResetTokenRepository.save(passwordResetToken);
 
-        String resetLink = "http://bloggio-changePassword.onrender/reset-password?token=" + token;
+        String resetLink = baseUrl + "/reset-password?token=" + token;
         emailService.sendEmail(requestPasswordUsers.getUserEmail(), "Reset Your Password", "Click the following link to reset your password: " + resetLink);
-
     }
 
     public void resetPassword(String token, String newPassword) {
