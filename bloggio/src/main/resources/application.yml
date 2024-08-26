@@ -32,6 +32,7 @@ bloggio:
   app:
     jwtSecret: "bloggioSecretKey"
     jwtExpirationMs: 86400000
+    base-url : "https://bloggio-web.onrender.com"
 
 cloudinary:
   cloud_name: "dbxivsisb"
@@ -40,5 +41,3 @@ cloudinary:
 
 sendgrid:
   api-key: ${SENDGRID_API_KEY}
-
-
