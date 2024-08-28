@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -24,7 +25,7 @@ public class CommentDTO implements Serializable {
 
     private Integer commentState;
 
-    private UUID commentIdReply;
+    private List<CommentDTO> commentsReply;
 
     private Date commentTimestampCreate;
 

@@ -13,6 +13,7 @@ import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
 import com.cloudinary.Cloudinary;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -157,6 +158,10 @@ public class PostService {
 
     public List<PostByFilters> getAllPostByFilters(int offset, int limit, String category_name, String post_title,
                                                    String post_creation_start, String post_creation_end) {
+        if (StringUtils.isEmpty(category_name) && StringUtils.isEmpty(post_title) && Objects.isNull(post_creation_start) && Objects.isNull(post_creation_end)) {
+            return Collections.emptyList();
+        }
+
         String categoryFormat = String.format("%%%s%%", category_name);
         String postFormat = String.format("%%%s%%", post_title);
         return postRepository.getAllPostByFilter(offset, limit, categoryFormat, postFormat, convertToLocalDate(post_creation_start), convertToLocalDate(post_creation_end));

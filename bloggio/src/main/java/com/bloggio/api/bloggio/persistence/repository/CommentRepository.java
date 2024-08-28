@@ -15,7 +15,7 @@ import java.util.UUID;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, UUID> {
 
-    @Query("select c from Comment c where c.post.postId=:postId")
+    @Query("select c from Comment c where c.post.postId=:postId and c.commentIdReply is null")
     List<Comment> findAllByPost(@Param("postId") UUID postId);
 
 
@@ -23,4 +23,6 @@ public interface CommentRepository extends JpaRepository<Comment, UUID> {
     @Transactional
     @Query(value = "delete from Comment c where c.post_id =:postId ", nativeQuery = true)
     void deleteAllCommentsByPostId(@Param("postId") UUID postId);
+
+    List<Comment> findAllByCommentIdReply(UUID commentId);
 }
