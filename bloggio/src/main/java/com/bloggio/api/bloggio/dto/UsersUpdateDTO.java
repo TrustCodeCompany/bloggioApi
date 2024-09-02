@@ -1,5 +1,6 @@
 package com.bloggio.api.bloggio.dto;
 
+import com.bloggio.api.bloggio.payload.users.ExistUserNickname;
 import com.bloggio.api.bloggio.payload.users.UniqueUserNickname;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ public class UsersUpdateDTO  implements Serializable {
 
     private String userId;
 
-    @UniqueUserNickname
+    @ExistUserNickname
     @NotNull
     @NotBlank
     @Size(min = 5 , max = 100)
