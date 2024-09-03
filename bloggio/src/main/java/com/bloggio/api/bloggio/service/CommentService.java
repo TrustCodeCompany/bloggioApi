@@ -11,13 +11,11 @@ import com.bloggio.api.bloggio.persistence.entity.Post;
 import com.bloggio.api.bloggio.persistence.repository.CommentRepository;
 import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,6 +56,8 @@ public class CommentService {
 
         var commentList = this.commentRepository.findAllByPost(UUID.fromString(postId));
 
+        List<CommentDTO> replyComments = new ArrayList<>();
+
         return commentList.stream().map(comment -> {
             CommentDTO commentDTO = new CommentDTO();
             if (Objects.nonNull(comment.getUserId())) {
@@ -71,7 +71,27 @@ public class CommentService {
             commentDTO.setCommentContent(comment.getCommentContent());
             commentDTO.setCommentState(comment.getCommentState());
             commentDTO.setCommentLikes(comment.getCommentLikes());
-            commentDTO.setCommentIdReply(comment.getCommentIdReply());
+
+            var replies = this.commentRepository.findAllByCommentIdReply(comment.getCommentId());
+
+            if (Objects.nonNull(replies)) {
+                replies.forEach(replyCommentsItem -> {
+                    var obj = this.commentRepository.findById(replyCommentsItem.getCommentId());
+                    CommentDTO commentDTOReply = this.commentMapper.commentEntityToCommentDTO(obj.get());
+                    replyComments.add(commentDTOReply);
+                    commentDTO.setCommentsReply(replyComments);
+                });
+            }
+
+            /*if (Objects.nonNull(comment.getCommentIdReply()) && StringUtils.isNotEmpty(comment.getCommentIdReply().toString())){
+                if (comment.getCommentId().equals(comment.getCommentIdReply())) {
+                    var obj = this.commentRepository.findById(comment.getCommentIdReply());
+                    CommentDTO commentDTOReply = this.commentMapper.commentEntityToCommentDTO(obj.get());
+                    replyComments.add(commentDTOReply);
+                    commentDTO.setCommentsReply(replyComments);
+                }
+            }*/
+
             commentDTO.setCommentTimestampCreate(comment.getCommentTimestampCreate());
             commentDTO.setCommentTimestampUpdate(comment.getCommentTimestampUpdate());
             commentDTO.setPostId(comment.getPost().getPostId());
