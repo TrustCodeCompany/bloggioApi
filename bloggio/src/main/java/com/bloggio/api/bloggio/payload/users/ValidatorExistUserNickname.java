@@ -2,7 +2,6 @@ package com.bloggio.api.bloggio.payload.users;
 
 import com.bloggio.api.bloggio.persistence.repository.UsersRepository;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -12,8 +11,11 @@ import javax.validation.ConstraintValidatorContext;
 @Log4j2
 public class ValidatorExistUserNickname implements ConstraintValidator<ExistUserNickname, String> {
 
-    @Autowired
-    UsersRepository usersRepository;
+    private final UsersRepository usersRepository;
+
+    public ValidatorExistUserNickname (UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
 
     @Override
     public boolean isValid(String nickname, ConstraintValidatorContext context) {
