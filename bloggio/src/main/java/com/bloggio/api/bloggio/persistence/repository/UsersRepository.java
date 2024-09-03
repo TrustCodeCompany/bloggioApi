@@ -17,9 +17,7 @@ public interface UsersRepository extends JpaRepository<Users, UUID> {
 
     Optional<Users> findByUserNickname(String userNickname);
 
-    Boolean existsByUserNickname(String userNickname);
-
-    Boolean existsByUserEmail(String userEmail);
+    boolean existsByUserNickname(String userNickname);
 
     @Modifying
     @Query("update Users u set u.userState =:state where u.userId =:uuid")
