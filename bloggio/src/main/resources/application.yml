@@ -18,6 +18,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+#    open-in-view: false
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -37,3 +38,9 @@ cloudinary:
 
 sendgrid:
   api-key: ${SENDGRID_API_KEY}
+
+#logging:
+#  level:
+#    #root: "warn"
+#    org.springframework.web: "info"
+#    org.hibernate: "error"
