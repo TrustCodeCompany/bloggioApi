@@ -76,8 +76,16 @@ public class CommentService {
 
             if (Objects.nonNull(replies)) {
                 replies.forEach(replyCommentsItem -> {
-                    var obj = this.commentRepository.findById(replyCommentsItem.getCommentId());
+                    Optional<Comment> obj = this.commentRepository.findById(replyCommentsItem.getCommentId());
                     CommentDTO commentDTOReply = this.commentMapper.commentEntityToCommentDTO(obj.get());
+                    if (Objects.nonNull(obj.get().getUserId())) {
+                        var user = this.usersRepository.findById(obj.get().getUserId());
+                        if (user.isPresent()) {
+                            var userDto = usersMapper.usersToUsersDTO(user.get());
+                            commentDTOReply.setUsersDTO(userDto);
+                        }
+                    }
+
                     replyComments.add(commentDTOReply);
                     commentDTO.setCommentsReply(replyComments);
                 });
